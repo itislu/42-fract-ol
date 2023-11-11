@@ -23,8 +23,8 @@ typedef struct s_mlx
 	double	x_max;
 	double	y_min;
 	double	y_max;
-	double	zoom_factor_x;
-	double	zoom_factor_y;
+	double	zoom_factor;
+	int		redraw_needed;
 } t_mlx;
 
 typedef struct s_complex
@@ -54,20 +54,39 @@ int key_handling(int keysymbol, t_mlx *mlx)
 	return (0);
 }
 
-int	zoom(int button, int x, int y, t_mlx *mlx)
+int zoom(int button, int x, int y, t_mlx *mlx)
 {
+	double	mouse_x_percent;
+	double	mouse_y_percent;
+	double	x_range;
+	double	y_range;
 
-	if (button == Button4)
+    if (button == Button4)
+    {
+        mlx->zoom_factor = 0.95;
+    }
+    else if (button == Button5)
+    {
+        mlx->zoom_factor = 1.05;
+    }
+	if (button == Button4 || button == Button5)
 	{
-		mlx->zoom_factor_x *= 0.95;
-		mlx->zoom_factor_y *= 0.95;
+		mouse_x_percent = (double)x / WINDOW_WIDTH;
+		mouse_y_percent = (double)y / WINDOW_HEIGHT;
+
+		x_range = mlx->x_max - mlx->x_min;
+		y_range = mlx->y_max - mlx->y_min;
+
+		mlx->x_min = mlx->x_min + x_range * (1 - mlx->zoom_factor) * mouse_x_percent;
+		mlx->x_max = mlx->x_min + x_range * mlx->zoom_factor;
+
+		mlx->y_min = mlx->y_min + y_range * (1 - mlx->zoom_factor) * mouse_y_percent;
+		mlx->y_max = mlx->y_min + y_range * mlx->zoom_factor;
+
+		mlx->redraw_needed = 1;
 	}
-	else if (button == Button5)
-	{
-		mlx->zoom_factor_x *= 1.05;
-		mlx->zoom_factor_y *= 1.05;
-	}
-	return(0);
+
+    return (0);
 }
 
 void img_pixel_put(t_mlx *mlx, int x, int y, int color)
@@ -139,8 +158,12 @@ void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, doubl
 
 int render(t_mlx *mlx)
 {
-	draw_mandelbrot(mlx, mlx->x_min * mlx->zoom_factor_x, mlx->x_max * mlx->zoom_factor_x, mlx->y_min * mlx->zoom_factor_y, mlx->y_max * mlx->zoom_factor_y, 0x10);
-	mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+	if (mlx->redraw_needed)
+	{
+		draw_mandelbrot(mlx, mlx->x_min, mlx->x_max, mlx->y_min, mlx->y_max, 0x10);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		mlx->redraw_needed = 0;
+	}
 	return (0);
 }
 
@@ -148,13 +171,14 @@ int main(void)
 {
 	t_mlx mlx;
 
-	mlx.zoom_factor_x = 1;
-	mlx.zoom_factor_y = 1;
+	mlx.zoom_factor = 1;
 	mlx.x_min = -2.0;
 	mlx.x_max = 1.0;
 	mlx.y_min = -1.5;
 	mlx.y_max = 1.5;
-	/* Initialization */
+	mlx.redraw_needed = 1;
+
+	/* MLX Initialization */
 	mlx.xvar = mlx_init();
 	if (!mlx.xvar)
 		clean_exit(&mlx, MLX_ERROR);
@@ -171,6 +195,7 @@ int main(void)
 	mlx_hook(mlx.win, DestroyNotify, NoEventMask, clean_exit, &mlx);
 	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &mlx);
 
+	/* Loop render */
 	mlx_loop_hook(mlx.xvar, render, &mlx);
 	mlx_loop(mlx.xvar);
 
