@@ -19,6 +19,7 @@ typedef struct	s_mlx
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;
+	int		color;
 }				t_mlx;
 
 int	clean_exit(t_mlx *mlx, int error)
@@ -61,28 +62,44 @@ void	img_pixel_put(t_mlx *mlx, int x, int y, int color)
 	}
 	while (i != mlx->bits_per_pixel)
 	{
-		*pixel++ = (color >> i) & 0xFF;
+		*pixel++ = (color >> i) & 0XFF;
 		i += next_byte;
 	}
 }
 
-void	draw_square(t_mlx *mlx)
+void	draw_square(t_mlx *mlx, int color)
 {
-	int	color;
+	//int	color;
 	int	x;
 	int	y;
 
-	color = 0x00FF0000;
-	x = 5;
+	//color = 0X00FF0000;
 	y = 5;
-	while (y < 105)
-		img_pixel_put(mlx, x, y++, color);
-	while (x < 105)
-		img_pixel_put(mlx, x++, y, color);
-	while (y > 5)
-		img_pixel_put(mlx, x, y--, color);
-	while (x > 5)
-		img_pixel_put(mlx, x--, y, color);
+	while (y < 720)
+	{
+		x = 5;
+		while (x < 1005)
+			img_pixel_put(mlx, x++, y, color);
+		y++;
+	}
+	// while (y < 105)
+	// 	img_pixel_put(mlx, x, y++, color);
+	// while (x < 105)
+	// 	img_pixel_put(mlx, x++, y, color);
+	// while (y > 5)
+	// 	img_pixel_put(mlx, x, y--, color);
+	// while (x > 5)
+	// 	img_pixel_put(mlx, x--, y, color);
+}
+
+int	render(t_mlx *mlx)
+{
+	mlx->color = (mlx->color + 0X00000055) % 0X00DDDDDD;
+	printf("%#.8x\n", mlx->color);
+	draw_square(mlx, mlx->color);
+	//mlx_do_sync(mlx->xvar);
+	mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+	return (0);
 }
 
 int	main(void)
@@ -102,12 +119,13 @@ int	main(void)
 	mlx.data = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.size_line, &mlx.endian);
 
 	/* Draw */
-	draw_square(&mlx);
-	mlx_put_image_to_window(mlx.xvar, mlx.win, mlx.img, 0, 0);
+	//draw_square(&mlx);
+	mlx.color = 0X00000000;
 
 	/* Key Events */
 	mlx_hook(mlx.win, KeyPress, KeyPressMask, key_handling, &mlx);
 	mlx_hook(mlx.win, DestroyNotify, NoEventMask, clean_exit, &mlx);
 
+	mlx_loop_hook(mlx.xvar, render, &mlx);
 	mlx_loop(mlx.xvar);
 }
