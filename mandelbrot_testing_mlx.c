@@ -1,15 +1,19 @@
 #include <mlx.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
 #include <X11/X.h>
 #include <X11/keysym.h>
+
+/* Not yet needed */
+#include <math.h>
+
+/* Not needed */
+#include <stdio.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
 #define MLX_ERROR 1
 
-typedef struct s_mlx
+typedef struct	s_mlx
 {
 	void	*xvar;
 	void	*win;
@@ -25,13 +29,13 @@ typedef struct s_mlx
 	double	y_max;
 	double	zoom_factor;
 	int		redraw_needed;
-} t_mlx;
+}	t_mlx;
 
-typedef struct s_complex
+typedef struct	s_complex
 {
 	double	real;
 	double	imag;
-} t_complex;
+}	t_complex;
 
 int clean_exit(t_mlx *mlx, int error)
 {
@@ -61,14 +65,14 @@ int zoom(int button, int x, int y, t_mlx *mlx)
 	double	x_range;
 	double	y_range;
 
-    if (button == Button4)
-    {
-        mlx->zoom_factor = 0.95;
-    }
-    else if (button == Button5)
-    {
-        mlx->zoom_factor = 1.05;
-    }
+	if (button == Button4)
+	{
+		mlx->zoom_factor = 0.95;
+	}
+	else if (button == Button5)
+	{
+		mlx->zoom_factor = 1.05;
+	}
 	if (button == Button4 || button == Button5)
 	{
 		mouse_x_percent = (double)x / WINDOW_WIDTH;
@@ -86,7 +90,7 @@ int zoom(int button, int x, int y, t_mlx *mlx)
 		mlx->redraw_needed = 1;
 	}
 
-    return (0);
+	return (0);
 }
 
 void img_pixel_put(t_mlx *mlx, int x, int y, int color)
@@ -115,29 +119,32 @@ void img_pixel_put(t_mlx *mlx, int x, int y, int color)
 
 void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, double y_max, int max_iteration)
 {
-	int	width = WINDOW_WIDTH;
-	int	height = WINDOW_HEIGHT;
-	int	iteration;
-	int	color;
+	int			iteration;
+	int			color;
+	int			i;
+	int			j;
+	t_complex	c;		// Possibly use math.h for this
+	t_complex	z;
+	t_complex	z_temp;
 
-	for (int i = 0; i < height; i++)
+	i = 0;
+	while (i < WINDOW_HEIGHT)
 	{
-		for (int j = 0; j < width; j++)
+		j = 0;
+		while (j < WINDOW_WIDTH)
 		{
 			// Map pixel coordinates to complex plane coordinates
-			double x0 = x_min + (x_max - x_min) * j / (width - 1.0);
-			double y0 = y_min + (y_max - y_min) * i / (height - 1.0);
-
-			t_complex c = {x0, y0};
-			t_complex z = {0, 0};
+			c.real = x_min + (x_max - x_min) * j / (WINDOW_WIDTH - 1.0);
+			c.imag = y_min + (y_max - y_min) * i / (WINDOW_HEIGHT - 1.0);
+			z.real = 0;
+			z.imag = 0;
 
 			iteration = 0;
 			while (z.real * z.real + z.imag * z.imag <= 4.0 && iteration < max_iteration)
 			{
-				t_complex temp = {
-					z.real * z.real - z.imag * z.imag + c.real,
-					2.0 * z.real * z.imag + c.imag};
-				z = temp;
+				z_temp.real = z.real * z.real - z.imag * z.imag + c.real;
+				z_temp.imag = 2.0 * z.real * z.imag + c.imag;
+				z = z_temp;
 				iteration++;
 			}
 
@@ -152,7 +159,10 @@ void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, doubl
 				color = (iteration << 0);
 
 			img_pixel_put(mlx, j, i, color * 50);
+
+			j++;
 		}
+		i++;
 	}
 }
 
