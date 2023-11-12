@@ -15,7 +15,8 @@
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
-# define MLX_ERROR 1
+# define ARG_ERROR 1
+# define MLX_ERROR 2
 
 typedef struct	s_mlx
 {

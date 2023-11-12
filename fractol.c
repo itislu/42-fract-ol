@@ -151,6 +151,19 @@ int render_julia(t_mlx *mlx)
 	return (0);
 }
 
+int	check_arguments(int argc, char *argv[])
+{
+	if (argc < 2)
+	{
+		return (0);
+	}
+	else if (ft_strcmp(argv[1], "mandelbrot") != 0 || ft_strcmp(argv[1], "julia") != 0)
+	{
+		return (1);
+	}
+	return (0);
+}
+
 int main(int argc, char *argv[])
 {
 	t_mlx mlx;
@@ -163,7 +176,8 @@ int main(int argc, char *argv[])
 	mlx.redraw_needed = 1;
 
 	/* Arguments Check */
-	(void) argc;
+	if (!check_arguments(argc, argv))
+		return (ARG_ERROR);
 
 	/* MLX Initialization */
 	mlx.xvar = mlx_init();
