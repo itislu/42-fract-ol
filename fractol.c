@@ -80,7 +80,7 @@ void img_pixel_put(t_mlx *mlx, int x, int y, int color)
 	}
 }
 
-void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, double y_max, int max_iteration)
+void draw_mandelbrot(t_mlx *mlx, int max_iteration)
 {
 	int			iteration;
 	int			color;
@@ -97,8 +97,8 @@ void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, doubl
 		while (j < WINDOW_WIDTH)
 		{
 			// Map pixel coordinates to complex plane coordinates
-			c.real = x_min + (x_max - x_min) * j / (WINDOW_WIDTH - 1.0);
-			c.imag = y_min + (y_max - y_min) * i / (WINDOW_HEIGHT - 1.0);
+			c.real = mlx->x_min + (mlx->x_max - mlx->x_min) * j / (WINDOW_WIDTH - 1.0);
+			c.imag = mlx->y_min + (mlx->y_max - mlx->y_min) * i / (WINDOW_HEIGHT - 1.0);
 			z.real = 0;
 			z.imag = 0;
 
@@ -129,11 +129,60 @@ void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, doubl
 	}
 }
 
+void draw_julia(t_mlx *mlx, int max_iteration, double escape_radius)
+{
+	int			iteration;
+	int			color;
+	int			i;
+	int			j;
+	t_complex	c;
+	t_complex	z;
+	t_complex	z_temp;
+
+	i = 0;
+	while (i < WINDOW_HEIGHT)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			// Map pixel coordinates to complex plane coordinates
+			c.real = -0.79; //mlx->mouse_x;		// should fluctuate between [-2,2]
+			c.imag = 0.23; //mlx->mouse_y;		// should fluctuate between [-2,2]
+			z.real = mlx->x_min + (mlx->x_max - mlx->x_min) * j / (WINDOW_WIDTH - 1.0);
+			z.imag = mlx->y_min + (mlx->y_max - mlx->y_min) * i / (WINDOW_HEIGHT - 1.0);
+
+			iteration = 0;
+			while (z.real * z.real + z.imag * z.imag < escape_radius * escape_radius && iteration < max_iteration)
+			{
+				z_temp.real = z.real * z.real - z.imag * z.imag + c.real;
+				z_temp.imag = 2.0 * z.real * z.imag + c.imag;
+				z = z_temp;
+				iteration++;
+			}
+
+			// Map the number of iterations to a color (adjust as needed)
+			if (iteration == max_iteration)
+				color = 0;
+			else if (iteration < max_iteration / 3)
+				color = (iteration << 16);
+			else if (iteration < max_iteration / 3 * 2)
+				color = (iteration << 8);
+			else if (iteration < max_iteration)
+				color = (iteration << 0);
+
+			img_pixel_put(mlx, j, i, color * 50);
+
+			j++;
+		}
+		i++;
+	}
+}
+
 int render_mandelbrot(t_mlx *mlx)
 {
 	if (mlx->redraw_needed)
 	{
-		draw_mandelbrot(mlx, mlx->x_min, mlx->x_max, mlx->y_min, mlx->y_max, 0x10);
+		draw_mandelbrot(mlx, 0x110);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
 		mlx->redraw_needed = 0;
 	}
@@ -144,7 +193,7 @@ int render_julia(t_mlx *mlx)
 {
 	if (mlx->redraw_needed)
 	{
-		draw_mandelbrot(mlx, mlx->x_min, mlx->x_max, mlx->y_min, mlx->y_max, 0x110);
+		draw_julia(mlx, 0x110, 2.0);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
 		mlx->redraw_needed = 0;
 	}
