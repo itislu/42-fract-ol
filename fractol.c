@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 	mlx.redraw_needed = 1;
 
 	/* Arguments Check */
-
+	(void) argc;
 
 	/* MLX Initialization */
 	mlx.xvar = mlx_init();
