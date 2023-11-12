@@ -1,7 +1,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "libft/libft.h"
+# include "libft.h"
 # include <mlx.h>
 # include <stdlib.h>
 # include <X11/X.h>
