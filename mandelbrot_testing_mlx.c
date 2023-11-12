@@ -129,7 +129,7 @@ void draw_mandelbrot(t_mlx *mlx, double x_min, double x_max, double y_min, doubl
 	}
 }
 
-int render(t_mlx *mlx)
+int render_mandelbrot(t_mlx *mlx)
 {
 	if (mlx->redraw_needed)
 	{
@@ -140,7 +140,18 @@ int render(t_mlx *mlx)
 	return (0);
 }
 
-int main(void)
+int render_julia(t_mlx *mlx)
+{
+	if (mlx->redraw_needed)
+	{
+		draw_mandelbrot(mlx, mlx->x_min, mlx->x_max, mlx->y_min, mlx->y_max, 0x110);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		mlx->redraw_needed = 0;
+	}
+	return (0);
+}
+
+int main(int argc, char *argv[])
 {
 	t_mlx mlx;
 
@@ -150,6 +161,9 @@ int main(void)
 	mlx.y_min = -1.5;
 	mlx.y_max = 1.5;
 	mlx.redraw_needed = 1;
+
+	/* Arguments Check */
+
 
 	/* MLX Initialization */
 	mlx.xvar = mlx_init();
@@ -169,7 +183,10 @@ int main(void)
 	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &mlx);
 
 	/* Loop render */
-	mlx_loop_hook(mlx.xvar, render, &mlx);
+	if (ft_strcmp(argv[1], "mandelbrot") == 0)
+		mlx_loop_hook(mlx.xvar, render_mandelbrot, &mlx);
+	else if (ft_strcmp(argv[1], "julia") == 0)
+		mlx_loop_hook(mlx.xvar, render_julia, &mlx);
 	mlx_loop(mlx.xvar);
 
 	return 0;
