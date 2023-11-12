@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/10/22 20:02:55 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/12 11:19:06 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,8 @@ SRC			=	ft_atoi.c \
 				ft_lstmap.c \
 				ft_lstnew.c \
 				ft_lstsize.c
+				\
+				ft_strcmp.c
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))
