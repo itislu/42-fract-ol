@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:17:46 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/12 10:30:15 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:50:29 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
 
 /* New functions */
+double	ft_atof(const char *nptr);
+int		ft_isspace(int c);
 int		ft_strcmp(const char *s1, const char *s2);
 
 #endif
