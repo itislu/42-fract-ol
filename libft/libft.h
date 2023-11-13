@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:17:46 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/13 20:32:04 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/13 21:42:12 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <limits.h>
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -76,6 +77,6 @@ int		ft_lstsize(t_list *lst);
 double	ft_atof(const char *nptr);
 int		ft_isspace(int c);
 int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strinset(const char *str, const char *set[], size_t set_size);
+int		ft_strmatches_any(const char *str, int n, ...);
 
 #endif

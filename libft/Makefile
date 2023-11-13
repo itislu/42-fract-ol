@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/13 20:32:29 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/13 21:42:29 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ SRC			=	ft_atoi.c \
 				ft_atof.c \
 				ft_isspace.c \
 				ft_strcmp.c \
-				ft_strinset
+				ft_strmatches_any.c
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))
