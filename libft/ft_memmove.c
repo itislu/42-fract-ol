@@ -6,14 +6,17 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:08:23 by ldulling          #+#    #+#             */
-/*   Updated: 2023/09/25 16:10:29 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/13 21:32:54 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/**
+ * Checks if dest is before or after src in memory, then starts copying from
+ * the beginning or the end respectively.
+ */
+
 #include "libft.h"
 
-/* Checks if dest is before or after src in memory,
-** then starts copying from the beginning or the end respectively */
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	unsigned char	*casted_ptr_dest;
