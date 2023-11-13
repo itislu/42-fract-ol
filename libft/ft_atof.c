@@ -6,9 +6,11 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 12:15:31 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/13 15:49:06 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:09:47 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 static double	decimal_places(const char *nptr);
 
