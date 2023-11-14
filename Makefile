@@ -85,8 +85,9 @@ debuglib:
 				make -C $L debug
 
 norm:
-				norminette -R CheckForbiddenSourceHeader
-				norminette -R CheckDefine $I*.h
+				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+				$(SRC) $(foreach X,$I,$X*.h)
+				@make -C $L norm --no-print-directory
 
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 		$(DEP)

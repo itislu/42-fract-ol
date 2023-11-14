@@ -75,7 +75,7 @@ ARFLAGS		=	rcs
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all cleandep cleanobj clean fclean re debug
+.PHONY:			all cleandep cleanobj clean fclean re debug norm
 
 all:			$(NAME)
 
@@ -125,6 +125,13 @@ debug:			debuglib re
 debuglib:
 				make -C $L debug
 
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean),)
+norm:
+				@read -p "Press Enter to check $$(basename "$$(pwd)")..." \
+				userInput;
+				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+				$(SRC) $(foreach X,$I,$X*.h)
+				@make -C $L norm --no-print-directory
+
+ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 		$(DEP)
 endif
