@@ -6,11 +6,11 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 12:34:09 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 18:49:45 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	libft.a
+export NAME	=	libft.a
 I			=	./ ft_printf/
 L			=	ft_printf/
 D			=	_build/dep/
@@ -68,21 +68,27 @@ SRC			=	ft_atoi.c \
 				ft_strmatches_any.c
 
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))
+CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
 DEBUGFLAGS	=	-g
 ARFLAGS		=	rcs
 
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all cleandep cleanobj clean fclean re debug norm
+.PHONY:			all lib cleandep cleanobj clean fclean re debug debuglib norm
 
-all:			$(NAME)
+all:			$(NAME) lib
+
+lib:
+ifeq ($(filter $(MAKECMDGOALS),debug),)
+				@make -C $L --no-print-directory
+endif
 
 $(NAME):		$(OBJ)
-				ar $(ARFLAGS) $(NAME) $^
-				make -C $L
-				mv $L*.a ./$(NAME)
+				ar $(ARFLAGS) $(NAME) $(OBJ)
+ifeq ($(filter $(MAKECMDGOALS),re),)
+				@make -C $L re
+endif
 
 $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
