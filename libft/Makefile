@@ -6,12 +6,12 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 09:42:56 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 10:24:26 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
-I			=	./
+I			=	./ ft_printf/
 D			=	_build/dep/
 O			=	_build/obj/
 
@@ -64,7 +64,18 @@ SRC			=	ft_atoi.c \
 				ft_atof.c \
 				ft_isspace.c \
 				ft_strcmp.c \
-				ft_strmatches_any.c
+				ft_strmatches_any.c \
+				\
+				ft_printf/ft_printf.c \
+				ft_printf/ft_putnbr_base_fd.c \
+				ft_printf/ft_putnchar_fd.c \
+				ft_printf/ft_putnstr_fd.c \
+				ft_printf/print_char.c \
+				ft_printf/print_nbr.c \
+				ft_printf/print_parsed.c \
+				ft_printf/print_ptr.c \
+				ft_printf/print_str.c \
+				ft_printf/set_format.c
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))

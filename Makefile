@@ -6,16 +6,16 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 09:42:33 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 10:23:31 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	fractol
-D			=	_build/dep/
-O			=	_build/obj/
 I			=	./ libft/
 L			=	libft/
-l			=	ft mlx Xext X11
+l			=	ft mlx Xext X11 m
+D			=	_build/dep/
+O			=	_build/obj/
 
 SRC			=	fractol.c \
 
