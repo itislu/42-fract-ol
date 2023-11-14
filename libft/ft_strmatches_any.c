@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:50:45 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/13 21:50:48 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/14 09:33:58 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param ... Variable number of strings to compare with str.
  *
  * @return If a match is found, it returns the position of the matching string
- *         (0-indexed).
+ *         (1-indexed).
  *         If no match is found, it returns 0.
  */
 
@@ -32,14 +32,13 @@ int	ft_strmatches_any(const char *str, int n, ...)
 
 	va_start(ap, n);
 	i = 0;
-	while (i < n)
+	while (i++ < n)
 	{
 		if (ft_strcmp(str, va_arg(ap, const char *)) == 0)
 		{
 			va_end(ap);
 			return (i);
 		}
-		i++;
 	}
 	va_end(ap);
 	return (0);
