@@ -6,14 +6,14 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/13 23:51:58 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 09:42:56 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 I			=	./
-D			=	build/dep/
-O			=	build/obj/
+D			=	_build/dep/
+O			=	_build/obj/
 
 SRC			=	ft_atoi.c \
 				ft_bzero.c \
@@ -97,7 +97,7 @@ cleanobj:
 				rm -rf $O
 
 clean:			cleandep cleanobj
-				rm -rf build/
+				rm -rf _build/
 
 fclean:			clean
 				rm -f $(NAME)

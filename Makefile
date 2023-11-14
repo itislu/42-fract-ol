@@ -6,13 +6,13 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 01:06:44 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 09:42:33 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	fractol
-D			=	build/dep/
-O			=	build/obj/
+D			=	_build/dep/
+O			=	_build/obj/
 I			=	./ libft/
 L			=	libft/
 l			=	ft mlx Xext X11
@@ -65,7 +65,7 @@ endif
 				rm -rf $O
 
 clean:			cleandep cleanobj
-				rm -rf build/
+				rm -rf _build/
 ifeq ($(filter $(MAKECMDGOALS),fclean re debug),)
 				make -C $L clean
 endif
