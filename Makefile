@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/12 14:10:43 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 01:06:44 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,24 +22,28 @@ SRC			=	fractol.c \
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
+DEBUGFLAGS	=	-g
 
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all libraries bonus cleandep cleanobj clean fclean re norminette
+.PHONY:			all lib bonus cleandep cleanobj clean fclean re debug debuglib \
+norm
 
-all:			libraries $(NAME)
+all:			lib $(NAME)
 
-libraries:
+lib:
+ifeq ($(filter $(MAKECMDGOALS),debug),)
 				@make -C $L --no-print-directory
+endif
 
 $(NAME):		$L $(OBJ)
-				$(CC) $(CFLAGS) $(OBJ) $(foreach X,$L,-L$X) $(foreach X,$l,-l$X) -o $(NAME)
+				$(CC) $(CFLAGS) $(OBJ) $(foreach X,$L,-L$X) \
+				$(foreach X,$l,-l$X) -o $(NAME)
 
 bonus:			all
 
 $(OBJ): $O%.o:	%.c | $O
-				make -C $L
 				$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEP): $D%.d:	%.c | $D
@@ -49,30 +53,38 @@ $O $D:
 				@mkdir -p $@
 
 cleandep:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re),)
+ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
 				make -C $L cleandep
 endif
 				rm -rf $D
 
 cleanobj:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re),)
+ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
 				make -C $L cleanobj
 endif
 				rm -rf $O
 
 clean:			cleandep cleanobj
 				rm -rf build/
-ifeq ($(filter $(MAKECMDGOALS),fclean re),)
+ifeq ($(filter $(MAKECMDGOALS),fclean re debug),)
 				make -C $L clean
 endif
 
 fclean:			clean
+ifeq ($(filter $(MAKECMDGOALS),debug),)
 				make -C $L fclean
+endif
 				rm -f $(NAME)
 
 re:				fclean all
 
-norminette:
+debug:			CFLAGS += $(DEBUGFLAGS)
+debug:			debuglib re
+
+debuglib:
+				make -C $L debug
+
+norm:
 				norminette -R CheckForbiddenSourceHeader
 				norminette -R CheckDefine $I*.h
 

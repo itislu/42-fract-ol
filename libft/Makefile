@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/13 21:42:29 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/13 23:51:58 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,12 +68,13 @@ SRC			=	ft_atoi.c \
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))
+DEBUGFLAGS	=	-g
 ARFLAGS		=	rcs
 
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all cleandep cleanobj clean fclean re
+.PHONY:			all cleandep cleanobj clean fclean re debug
 
 all:			$(NAME)
 
@@ -102,6 +103,9 @@ fclean:			clean
 				rm -f $(NAME)
 
 re:				fclean all
+
+debug:			CFLAGS += $(DEBUGFLAGS)
+debug:			re
 
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean),)
 -include 		$(DEP)
