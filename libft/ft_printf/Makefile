@@ -6,15 +6,15 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/10/22 21:55:27 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 12:41:34 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	libftprintf.a
-I			=	./
-D			=	build/dep/
-O			=	build/obj/
-L			=	libft/
+NAME		=	libft_printf.a
+I			=	./ ../
+L			=	../
+D			=	_build/dep/
+O			=	_build/obj/
 
 SRC			=	ft_printf.c \
 				ft_putnbr_base_fd.c \
@@ -29,21 +29,20 @@ SRC			=	ft_printf.c \
 
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
+DEBUGFLAGS	=	-g
 ARFLAGS		=	rcs
 
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all bonus cleandep cleanobj clean fclean re norminette
+.PHONY:			all cleandep cleanobj clean fclean re debug norminette
 
-all:			$(NAME)
+all:			$(NAME)	#Possibly | ?
 
 $(NAME):		$(OBJ)
 				make -C $L
-				cp $Llibft.a ./$@
+				mv $Llibft.a ./$(NAME)
 				ar $(ARFLAGS) $(NAME) $^
-
-bonus:			all
 
 $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
@@ -55,25 +54,15 @@ $O $D:
 				@mkdir -p $@
 
 cleandep:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re),)
-				make -C $L cleandep
-endif
 				rm -rf $D
 
 cleanobj:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re),)
-				make -C $L cleanobj
-endif
 				rm -rf $O
 
 clean:			cleandep cleanobj
-				rm -rf build/
-ifeq ($(filter $(MAKECMDGOALS),fclean re),)
-				make -C $L clean
-endif
+				rm -rf _build/
 
 fclean:			clean
-				make -C $L fclean
 				rm -f $(NAME)
 
 re:				fclean all
@@ -81,6 +70,9 @@ re:				fclean all
 norminette:
 				norminette -R CheckForbiddenSourceHeader
 				norminette -R CheckDefine $I*.h
+
+debug:			CFLAGS += $(DEBUGFLAGS)
+debug:			re
 
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean),)
 -include 		$(DEP)

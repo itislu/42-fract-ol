@@ -6,12 +6,11 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:55 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 20:23:43 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:13:26 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 
 static int	nbrlen(long nbr, t_struct *f);
 static int	fullnbrlen(long nbr, int len_nbr, t_struct *f);

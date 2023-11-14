@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 10:23:31 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 12:39:35 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,10 +65,10 @@ endif
 				rm -rf $O
 
 clean:			cleandep cleanobj
-				rm -rf _build/
 ifeq ($(filter $(MAKECMDGOALS),fclean re debug),)
 				make -C $L clean
 endif
+				rm -rf _build/
 
 fclean:			clean
 ifeq ($(filter $(MAKECMDGOALS),debug),)
@@ -88,6 +88,6 @@ norm:
 				norminette -R CheckForbiddenSourceHeader
 				norminette -R CheckDefine $I*.h
 
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean),)
+ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 		$(DEP)
 endif
