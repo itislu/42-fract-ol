@@ -6,9 +6,11 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 12:39:35 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/14 18:26:16 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+export 			MAKECMDGOALS
 
 NAME		=	fractol
 I			=	./ libft/
@@ -19,7 +21,6 @@ O			=	_build/obj/
 
 SRC			=	fractol.c \
 
-
 CC			=	cc
 CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
 DEBUGFLAGS	=	-g
@@ -27,10 +28,12 @@ DEBUGFLAGS	=	-g
 DEP			=	$(SRC:%.c=$D%.d)
 OBJ			=	$(SRC:%.c=$O%.o)
 
-.PHONY:			all lib bonus cleandep cleanobj clean fclean re debug debuglib \
+.PHONY:			all bonus lib cleandep cleanobj clean fclean re debug debuglib \
 norm
 
 all:			lib $(NAME)
+
+bonus:			all
 
 lib:
 ifeq ($(filter $(MAKECMDGOALS),debug),)
@@ -40,8 +43,6 @@ endif
 $(NAME):		$L $(OBJ)
 				$(CC) $(CFLAGS) $(OBJ) $(foreach X,$L,-L$X) \
 				$(foreach X,$l,-l$X) -o $(NAME)
-
-bonus:			all
 
 $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
