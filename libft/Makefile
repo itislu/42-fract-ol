@@ -15,7 +15,7 @@ NAME		=	libft.a
 # Header files directory:
 I			=	inc/
 
-# Build artifacts directories:
+# Build directories:
 B			=	build/
 D			=	$Bdep/
 O			=	$Bobj/
@@ -24,7 +24,7 @@ O			=	$Bobj/
 S			=	src/
 
 # Makefiles in build/ dir - list all source files and store them in SRC variable
-SOURCELIST	=	libft.mk
+SOURCELIST	=	SRC_LIBFT.mk
 
 # Flags
 CC			=	cc
@@ -34,12 +34,12 @@ ARFLAGS		=	rcs
 
 #******************************************************************************#
 
-include			src/libft/libft.mk #$(wildcard $(S)/*.mk) # - or not?
+include			$(addprefix $B,$(SOURCELIST)) #$(wildcard $(S)/*.mk) # - or not?
 # either prepend $S here or later...
 #SRC			:=	$(foreach X,$(SRC),$S$X)
 
-DEP			=	$(SRC:$S%.c=$D%.d)
-OBJ			=	$(SRC:$S%.c=$O%.o)
+DEP			=	$(SRC:%.c=$D%.d)
+OBJ			=	$(SRC:%.c=$O%.o)
 
 .PHONY:			all cleandep cleanobj clean fclean re debug norm
 
