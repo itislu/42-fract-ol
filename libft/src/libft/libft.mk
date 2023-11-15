@@ -1,11 +1,11 @@
 #If I'm already here I can also name the folder too
-DIR		=	libft/
+DIR		:=	libft/
 
 #			Reset TMP
 TMP		:=
 
 #			Chars
-SUBDIR	=	chars/
+SUBDIR	:=	chars/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_isalnum.c \
 			ft_isalpha.c \
@@ -18,7 +18,7 @@ TMP		+=	$(addprefix $(SUBDIR), \
 )
 
 #			Lists
-SUBDIR	=	lists/
+SUBDIR	:=	lists/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_lstadd_back.c \
 			ft_lstadd_front.c \
@@ -32,7 +32,7 @@ TMP		+=	$(addprefix $(SUBDIR), \
 )
 
 #			Memory
-SUBDIR	=	memory/
+SUBDIR	:=	memory/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_bzero.c \
 			ft_calloc.c \
@@ -44,14 +44,14 @@ TMP		+=	$(addprefix $(SUBDIR), \
 )
 
 #			Numbers
-SUBDIR	=	numbers/
+SUBDIR	:=	numbers/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_atof.c \
 			ft_atoi.c \
 )
 
 #			Put
-SUBDIR	=	put/
+SUBDIR	:=	put/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_putchar_fd.c \
 			ft_putendl_fd.c \
@@ -60,7 +60,7 @@ TMP		+=	$(addprefix $(SUBDIR), \
 )
 
 #			Strings
-SUBDIR	=	strings/
+SUBDIR	:=	strings/
 TMP		+=	$(addprefix $(SUBDIR), \
 			ft_itoa.c \
 			ft_split.c \
@@ -82,7 +82,7 @@ TMP		+=	$(addprefix $(SUBDIR), \
 )
 
 #			Various
-SUBDIR	=	various/
+SUBDIR	:=	various/
 TMP		+=	$(addprefix $(SUBDIR), \
 )
 
