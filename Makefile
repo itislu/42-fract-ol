@@ -13,7 +13,7 @@
 export 			MAKECMDGOALS
 
 NAME		=	fractol
-I			=	./ libft/
+I			=	./ libft/inc/
 L			=	libft/
 l			=	ft mlx Xext X11 m
 D			=	_build/dep/
