@@ -10,77 +10,81 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	libft.a
+NAME		:=		libft.a
 
 # Header files directory:
-I			=	inc/
+I			:=		inc/
 
 # Build directories:
-B			=	build/
-D			=	$Bdep/
-O			=	$Bobj/
+B			:=		build/
+D			:=		$Bdep/
+O			:=		$Bobj/
 
 # Source files directory:
-S			=	src/
+S			:=		src/
 
 # Makefiles in build/ dir - list all source files and store them in SRC variable
-SOURCELIST	=	SRC_LIBFT.mk
+SOURCELIST	:=		SRC_LIBFT.mk
 
 # Flags
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
-DEBUGFLAGS	=	-g
-ARFLAGS		=	rcs
+CC			:=		cc
+CFLAGS		:=		-Wall -Wextra -Werror $(foreach X,$I,-I$X)
+DEBUGFLAGS	:=		-g
+ARFLAGS		:=		rcs
 
 #******************************************************************************#
 
-include			$(addprefix $B,$(SOURCELIST)) #$(wildcard $(S)/*.mk) # - or not?
-# either prepend $S here or later...
-#SRC			:=	$(foreach X,$(SRC),$S$X)
+include				$(addprefix $B,$(SOURCELIST))
 
-DEP			=	$(SRC:%.c=$D%.d)
-OBJ			=	$(SRC:%.c=$O%.o)
+SRC				:=	$(SRC_LIBFT)
 
-.PHONY:			all cleandep cleanobj clean fclean re debug norm
+DEP				:=	$(SRC:%.c=$D%.d)
+OBJ				:=	$(SRC:%.c=$O%.o)
+SUBDIRS_D		:=	$(sort $(dir $(DEP)))
+SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
 
-all:			$(NAME)
+.PHONY			:	all cleandep cleanobj clean fclean re debug norm
 
-$(NAME):		$(OBJ)
-				ar $(ARFLAGS) $(NAME) $(OBJ)
+all				:	$(NAME)
 
-$(OBJ): $O%.o:	%.c | $O
-				$(CC) $(CFLAGS) -c $< -o $@
+$(NAME)			:	$(OBJ)
+					ar $(ARFLAGS) $(NAME) $(OBJ)
 
-$(DEP): $D%.d:	%.c | $D
-				@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
+$(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
+					$(CC) $(CFLAGS) -c $< -o $@
 
-$O $D:
-				@mkdir -p $@
+$(DEP):	$D%.d	:	$S%.c | $(SUBDIRS_D)
+					@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
 
-cleandep:
-				rm -rf $D
+$(SUBDIRS_D) $(SUBDIRS_O):
+					@mkdir -p $@
 
-cleanobj:
-				rm -rf $O
+cleandep		:
+					rm -rf $D
 
-clean:			cleandep cleanobj
-#				rm -rf $B
+cleanobj		:
+					rm -rf $O
 
-fclean:			clean
-				rm -f $(NAME)
+clean			:	cleandep cleanobj
 
-re:				fclean all
+fclean			:	clean
+					rm -f $(NAME)
+
+re				:	fclean all
 
 # is it possible to do it in one line with , or ; ?
-debug:			CFLAGS += $(DEBUGFLAGS)
-debug:			re
+debug			:	CFLAGS += $(DEBUGFLAGS)
+debug			:	re
 
-norm:			# Prolly need to change the message now
-				@read -p "Press Enter to check $$(basename "$$(pwd)")..." \
-				userInput;
-				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
-				$(SRC) $(foreach X,$I,$X*.h)
+norm			:	# Prolly need to change the message now
+					@read -p "Press Enter to check $$(basename "$$(pwd)")..." \
+					userInput;
+					-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+					$(SRC) $(foreach X,$I,$X*.h)
 
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
--include 		$(DEP)
+-include 			$(DEP)
 endif
+
+#Debugging
+print-%  : ; @echo $* = $($*)
