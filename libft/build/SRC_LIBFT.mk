@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    SRC_LIBFT.mk                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ldulling <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
+#    Updated: 2023/11/16 13:33:44 by ldulling         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Gets this file's name (without suffix) which will be the final variable's name
 VARNAME	:=	$(basename $(notdir $(lastword $(MAKEFILE_LIST))))
 
