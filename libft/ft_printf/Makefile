@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	libft_printf.a
+#NAME		=	../libft.a
 I			=	./ ../
 L			=	../
 D			=	_build/dep/
@@ -37,12 +37,10 @@ OBJ			=	$(SRC:%.c=$O%.o)
 
 .PHONY:			all cleandep cleanobj clean fclean re debug norm
 
-all:			$(NAME)	#Possibly | ?
+all:			$L$(NAME)	#Possibly | ?
 
-$(NAME):		$(OBJ)
-				make -C $L
-				mv $Llibft.a ./$(NAME)
-				ar $(ARFLAGS) $(NAME) $^
+$L$(NAME):		$(OBJ)
+				ar $(ARFLAGS) $L$(NAME) $^
 
 $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
