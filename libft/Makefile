@@ -57,10 +57,10 @@ $(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEP):	$D%.d	:	$S%.c | $(SUBDIRS_D)
-					@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
+	@				$(CC) $(CFLAGS) -M -MP -MF $@ -MT "$O$*.o $@" $<
 
 $(SUBDIRS_D) $(SUBDIRS_O):
-					@mkdir -p $@
+	@				mkdir -p $@
 
 cleandep		:
 					rm -rf $D
@@ -80,7 +80,7 @@ debug			:	CFLAGS += $(DEBUGFLAGS)
 debug			:	re
 
 norm			:	# Prolly need to change the message now
-					@read -p "Press Enter to check $$(basename "$$(pwd)")..." \
+	@				read -p "Press Enter to check $$(basename "$$(pwd)")..." \
 					userInput;
 					-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
 					$(SRC) $(foreach X,$I,$X*.h)

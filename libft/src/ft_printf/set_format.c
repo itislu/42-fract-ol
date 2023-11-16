@@ -129,4 +129,3 @@ static void	set_specifier(const char *format, int *i, t_struct *f)
 		f->unresolved = 1;
 	return ;
 }
-

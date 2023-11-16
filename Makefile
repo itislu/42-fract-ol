@@ -37,7 +37,7 @@ bonus:			all
 
 lib:
 ifeq ($(filter $(MAKECMDGOALS),debug),)
-				@make -C $L --no-print-directory
+	@			make -C $L --no-print-directory
 endif
 
 $(NAME):		$L $(OBJ)
@@ -48,10 +48,10 @@ $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEP): $D%.d:	%.c | $D
-				@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
+	@			$(CC) $(CFLAGS) -M -MP -MF $@ -MT "$O$*.o $@" $<
 
 $O $D:
-				@mkdir -p $@
+	@			mkdir -p $@
 
 cleandep:
 ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
@@ -88,7 +88,7 @@ debuglib:
 norm:
 				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
 				$(SRC) $(foreach X,$I,$X*.h)
-				@make -C $L norm --no-print-directory
+	@			make -C $L norm --no-print-directory
 
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 		$(DEP)
