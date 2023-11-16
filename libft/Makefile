@@ -24,7 +24,7 @@ O			:=		$Bobj/
 S			:=		src/
 
 # Makefiles in build/ dir - list all source files and store them in SRC variable
-SOURCELIST	:=		SRC_LIBFT.mk
+SOURCELIST	:=		SRC_LIBFT.mk SRC_FT_PRINTF.mk
 
 # Flags
 CC			:=		cc
@@ -36,7 +36,7 @@ ARFLAGS		:=		rcs
 
 include				$(addprefix $B,$(SOURCELIST))
 
-SRC				:=	$(SRC_LIBFT)
+SRC				:=	$(foreach VAR,$(basename $(SOURCELIST)),$($(VAR)))
 
 DEP				:=	$(SRC:%.c=$D%.d)
 OBJ				:=	$(SRC:%.c=$O%.o)

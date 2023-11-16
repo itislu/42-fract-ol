@@ -1,12 +1,17 @@
-#If I'm already here I can also name the folder too
-DIR		:=	libft/
+# Gets this file's name (without suffix) which will be the final variable's name
+VARNAME	:=	$(basename $(notdir $(lastword $(MAKEFILE_LIST))))
 
-#			Reset TMP
+# Resets TMP to get rid of any old values
 TMP		:=
 
-#			Chars
+#******************************************************************************#
+
+# Directory of source files in src/ directory
+DIR		:=	libft/
+
+# Chars
 SUBDIR	:=	chars/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_isalnum.c \
 			ft_isalpha.c \
 			ft_isascii.c \
@@ -17,9 +22,9 @@ TMP		+=	$(addprefix $(SUBDIR), \
 			ft_toupper.c \
 )
 
-#			Lists
+# Lists
 SUBDIR	:=	lists/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_lstadd_back.c \
 			ft_lstadd_front.c \
 			ft_lstclear.c \
@@ -31,9 +36,9 @@ TMP		+=	$(addprefix $(SUBDIR), \
 			ft_lstsize.c \
 )
 
-#			Memory
+# Memory
 SUBDIR	:=	memory/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_bzero.c \
 			ft_calloc.c \
 			ft_memchr.c \
@@ -43,25 +48,25 @@ TMP		+=	$(addprefix $(SUBDIR), \
 			ft_memset.c \
 )
 
-#			Numbers
+# Numbers
 SUBDIR	:=	numbers/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_atof.c \
 			ft_atoi.c \
 )
 
-#			Put
+# Put
 SUBDIR	:=	put/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_putchar_fd.c \
 			ft_putendl_fd.c \
 			ft_putnbr_fd.c \
 			ft_putstr_fd.c \
 )
 
-#			Strings
+# Strings
 SUBDIR	:=	strings/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_itoa.c \
 			ft_split.c \
 			ft_strchr.c \
@@ -81,16 +86,10 @@ TMP		+=	$(addprefix $(SUBDIR), \
 			ft_substr.c \
 )
 
-#			Various
+# Various
 SUBDIR	:=	various/
-TMP		+=	$(addprefix $(SUBDIR), \
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 )
 
-#			Prepend current directory to all SRC files
-#DIR		:=	$(shell basename "$$(pwd)")
-#SRC		+=	$(foreach X,$(TMP),$(DIR)/$X)
-#SRC_LIBFT	+=	$(foreach X,$(TMP),$(DIR)$X)
-#SRC_LIBFT	+=	$(patsubst $(CURDIR)/%,%,$(TMP))
-SRC_LIBFT	+=	$(addprefix $(DIR),$(TMP))
-
-print-%  : ; @echo $* = $($*)
+# Creates the final variable and assigns all the listed source files to it
+$(eval $(VARNAME)	:=	$(TMP))
