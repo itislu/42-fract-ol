@@ -47,6 +47,9 @@ SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
 
 all				:	$(NAME)
 
+#temporary - searching for fix, but not working yet
+$(SRC_FT_PRINTF):	$(SRC_LIBFT)
+
 $(NAME)			:	$(OBJ)
 					ar $(ARFLAGS) $(NAME) $(OBJ)
 
