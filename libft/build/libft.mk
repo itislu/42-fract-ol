@@ -1,24 +1,27 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    SRC_LIBFT.mk                                       :+:      :+:    :+:    #
+#    libft.mk                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ldulling <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/16 13:33:44 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/17 15:05:10 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Gets this file's name (without suffix) which will be the final variable's name
-VARNAME	:=	$(basename $(notdir $(lastword $(MAKEFILE_LIST))))
+# Gets this file's name (without suffix) for automatic variable creation later.
+FILENAME	:=	$(basename $(notdir $(lastword $(MAKEFILE_LIST))))
 
-# Resets TMP to get rid of any old values
+# Resets TMP to get rid of any old values from other .mk files.
 TMP		:=
 
-#******************************************************************************#
+# ******************************** CONFIG ************************************ #
 
-# Directory of source files in src/ directory
+# Dependencies:
+DEPS	:=
+
+# Directory of source files in src/ directory:
 DIR		:=	libft/
 
 # Chars
@@ -103,5 +106,14 @@ SUBDIR	:=	various/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 )
 
-# Creates the final variable and assigns all the listed source files to it
-$(eval $(VARNAME)	:=	$(TMP))
+# **************************************************************************** #
+
+# Creates the final SRC variable and assigns the source files specified above.
+$(eval SRC_$(FILENAME)	:=	$(TMP))
+
+# Creates an OBJ variable for the dependency rule below.
+$(eval OBJ_$(FILENAME)	:=	$(SRC_$(FILENAME):%.c=$O%.o))
+
+# Makes this file's object files dependent on any DEPS specified above.
+# Requires a general rule how to compile object files somewhere.
+$(OBJ_$(FILENAME)):	$O%.o	:	$(foreach X,$(DEPENDENCIES),$(OBJ_$X))

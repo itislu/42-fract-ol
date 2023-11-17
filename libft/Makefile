@@ -6,9 +6,11 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 18:49:45 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/17 15:05:20 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# ******************************** CONFIG ************************************ #
 
 NAME		:=		libft.a
 
@@ -23,10 +25,10 @@ O			:=		$Bobj/
 # Source files directory:
 S			:=		src/
 
-# Makefiles in build/ dir - list all source files and store them in SRC variable
-SOURCELIST	:=		SRC_LIBFT.mk SRC_FT_PRINTF.mk
+# Makefiles in build/ directory with source file listings to be included:
+SOURCELIST	:=		libft.mk ft_printf.mk
 
-# Flags
+# Flags:
 CC			:=		cc
 CFLAGS		:=		-Wall -Wextra -Werror $(foreach X,$I,-I$X)
 DEBUGFLAGS	:=		-g
@@ -34,21 +36,18 @@ ARFLAGS		:=		rcs
 
 #******************************************************************************#
 
+.PHONY			:	all cleandep cleanobj clean fclean re debug norm
+
+all				:	$(NAME)
+
 include				$(addprefix $B,$(SOURCELIST))
 
-SRC				:=	$(foreach VAR,$(basename $(SOURCELIST)),$($(VAR)))
+SRC				:=	$(foreach VAR,$(basename $(SOURCELIST)),$(SRC_$(VAR)))
 
 DEP				:=	$(SRC:%.c=$D%.d)
 OBJ				:=	$(SRC:%.c=$O%.o)
 SUBDIRS_D		:=	$(sort $(dir $(DEP)))
 SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
-
-.PHONY			:	all cleandep cleanobj clean fclean re debug norm
-
-all				:	$(NAME)
-
-#temporary - searching for fix, but not working yet
-$(SRC_FT_PRINTF):	$(SRC_LIBFT)
 
 $(NAME)			:	$(OBJ)
 					ar $(ARFLAGS) $(NAME) $(OBJ)
