@@ -94,5 +94,7 @@ ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 			$(DEP)
 endif
 
-#Debugging
-print-%  : ; @echo $* = $($*)
+
+# Prints the values of the variable given after the minus.
+print-%			:
+					@echo $* = $($*)

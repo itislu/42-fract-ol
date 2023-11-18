@@ -93,3 +93,7 @@ norm:
 ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 		$(DEP)
 endif
+
+# Makefile debugging
+print-%		:
+				@echo $* = $($*)

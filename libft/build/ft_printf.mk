@@ -48,3 +48,7 @@ $(eval OBJ_$(FILENAME)		:=	$(SRC_$(FILENAME):%.c=$O%.o))
 
 # Makes this file's object files dependent on any DEPS specified above.
 $(OBJ_$(FILENAME)):	$O%.o	:	$(foreach dep,$(DEPS),$(OBJ_$(dep)))
+
+# Prints the values of the variable given after the minus.
+print-%			:
+					@echo $* = $($*)
