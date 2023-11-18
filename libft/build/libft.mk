@@ -10,13 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
+# ****************************** PREPARATION ********************************* #
+
 # Gets this file's name (without suffix) for automatic variable creation later.
 FILENAME	:=	$(basename $(notdir $(lastword $(MAKEFILE_LIST))))
 
 # Resets TMP to get rid of any old values from other .mk files.
-TMP		:=
+TMP			:=
 
-# ******************************** CONFIG ************************************ #
+# ***************************** CONFIGURATION ******************************** #
 
 # Dependencies - has to be the basename of the corresponding .mk file:
 DEPS	:=
@@ -24,7 +26,8 @@ DEPS	:=
 # Directory of source files in src/ directory:
 DIR		:=	libft/
 
-# Chars
+# Source files:
+#  Chars:
 SUBDIR	:=	chars/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_isalnum.c \
@@ -37,7 +40,7 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_toupper.c \
 )
 
-# Lists
+#  Lists:
 SUBDIR	:=	lists/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_lstadd_back.c \
@@ -51,7 +54,7 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_lstsize.c \
 )
 
-# Memory
+#  Memory:
 SUBDIR	:=	memory/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_bzero.c \
@@ -63,14 +66,14 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_memset.c \
 )
 
-# Numbers
+#  Numbers:
 SUBDIR	:=	numbers/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_atof.c \
 			ft_atoi.c \
 )
 
-# Put
+#  Put:
 SUBDIR	:=	put/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_putchar_fd.c \
@@ -79,7 +82,7 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_putstr_fd.c \
 )
 
-# Strings
+#  Strings:
 SUBDIR	:=	strings/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_itoa.c \
@@ -101,12 +104,12 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			ft_substr.c \
 )
 
-# Various
+#  Various:
 SUBDIR	:=	various/
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 )
 
-# **************************************************************************** #
+# *************************** VARIABLE CREATION ****************************** #
 
 # Creates a final SRC variable and assigns all the source files specified above.
 $(eval SRC_$(FILENAME)		:=	$(TMP))
@@ -116,6 +119,8 @@ $(eval OBJ_$(FILENAME)		:=	$(SRC_$(FILENAME):%.c=$O%.o))
 
 # Makes this file's object files dependent on any DEPS specified above.
 $(OBJ_$(FILENAME)):	$O%.o	:	$(foreach dep,$(DEPS),$(OBJ_$(dep)))
+
+# *************************** MAKEFILE DEBUGGING ***************************** #
 
 # Prints the values of the variable given after the minus.
 print-%			:

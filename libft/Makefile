@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-# ******************************** CONFIG ************************************ #
+# ***************************** CONFIGURATION ******************************** #
 
 NAME		:=		libft.a
 
@@ -36,7 +36,7 @@ CFLAGS		:=		-Wall -Wextra -Werror $(foreach X,$I,-I$X)
 DEBUGFLAGS	:=		-g
 ARFLAGS		:=		rcs
 
-#******************************************************************************#
+# ***************************** BUILD PROCESS ******************************** #
 
 .DEFAULT_GOAL	:=	all
 
@@ -80,7 +80,6 @@ fclean			:	clean
 
 re				:	fclean all
 
-# is it possible to do it in one line with , or ; ?
 debug			:	CFLAGS += $(DEBUGFLAGS)
 debug			:	re
 
@@ -94,6 +93,7 @@ ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
 -include 			$(DEP)
 endif
 
+# *************************** MAKEFILE DEBUGGING ***************************** #
 
 # Prints the values of the variable given after the minus.
 print-%			:
