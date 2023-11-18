@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/17 15:05:20 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/18 13:27:26 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SOURCELISTS	:=		libft.mk \
 
 # Flags:
 CC			:=		cc
-CFLAGS		:=		-Wall -Wextra -Werror $(foreach dir,$I,-I$(dir))
+CFLAGS		:=		-Wall -Wextra -Werror $(addprefix -I,$I)
 DEBUGFLAGS	:=		-g
 ARFLAGS		:=		rcs
 
@@ -63,39 +63,52 @@ $(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
 $(DEP):	$D%.d	:	$S%.c | $(SUBDIRS_D)
 	@				$(CC) $(CFLAGS) -M -MP -MF $@ -MT "$O$*.o $@" $<
 
-$(SUBDIRS_D) $(SUBDIRS_O):
+$(SUBDIRS_O) $(SUBDIRS_D):
 	@				mkdir -p $@
 
 cleandep		:
-					@rm -f $(DEP)
+ifneq (,$(wildcard $(DEP)))
+					rm -f $(DEP)
+endif
+ifneq (,$(wildcard $D))
 					-find $(D) -type d -empty -delete
+endif
 
 cleanobj		:
-					@rm -f $(OBJ)
+ifneq (,$(wildcard $(OBJ)))
+					rm -f $(OBJ)
+endif
+ifneq (,$(wildcard $O))
 					-find $(O) -type d -empty -delete
+endif
 
 clean			:	cleandep cleanobj
 
 fclean			:	clean
+ifneq (,$(wildcard $(NAME)))
 					rm -f $(NAME)
+endif
 
 re				:	fclean all
 
 debug			:	CFLAGS += $(DEBUGFLAGS)
 debug			:	re
 
-norm			:	# Prolly need to change the message now
+#TODO: prolly need to change the message now
+norm			:
 	@				read -p "Press Enter to check $$(basename "$$(pwd)")..." \
 					userInput;
 	@				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
-					$(foreach src,$(SRC),$S$(src)) $(foreach dir,$I,$(dir)*.h)
+					$(addprefix $S,$(SRC)) $(foreach dir,$I,$(dir)*.h)
 
 ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
-    -include 		$(DEP)
+    ifneq (,$(wildcard $O))
+        -include	$(DEP)
+    endif
 endif
 
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 # Prints the values of the variable given after the minus.
 print-%			:
-					@echo $* = $($*)
+	@				echo $* = $($*)

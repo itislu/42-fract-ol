@@ -6,14 +6,13 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:17:46 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/14 18:21:52 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:36:35 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "ft_printf.h"	// tbd
 # include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
@@ -62,7 +61,10 @@ int		ft_atoi(const char *nptr);
 /* Put */
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
+int		ft_putnbr_base_fd(long n, const char *base, int fd);
 void	ft_putnbr_fd(int n, int fd);
+size_t	ft_putnchar_fd(unsigned char c, size_t n, int fd);
+size_t	ft_putnstr_fd(const char *s, size_t n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 
 /* Strings */

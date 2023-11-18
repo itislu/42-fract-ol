@@ -10,19 +10,25 @@
 /* Not yet needed */
 #include <math.h>
 
-/* Not needed */
+/* temporary */
 #include <stdio.h>
+#include "ft_printf.h"
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define ARG_ERROR 1
 # define MLX_ERROR 2
+# define MANDELBROT 1
+# define JULIA 2
 
-typedef struct	s_mlx
+typedef struct	s_complex
 {
-	void	*xvar;
-	void	*win;
-	void	*img;
+	double	real;
+	double	imag;
+}	t_complex;
+
+typedef struct	s_data
+{
 	char	*data;
 	int		bits_per_pixel;
 	int		size_line;
@@ -34,12 +40,16 @@ typedef struct	s_mlx
 	double	y_max;
 	double	zoom_factor;
 	int		redraw_needed;
-}	t_mlx;
+	int		set;
+	t_complex	c_default;
+}	t_data;
 
-typedef struct	s_complex
+typedef struct	s_mlx
 {
-	double	real;
-	double	imag;
-}	t_complex;
+	void	*xvar;
+	void	*win;
+	void	*img;
+	t_data	data;
+}	t_mlx;
 
 #endif
