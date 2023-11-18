@@ -18,7 +18,7 @@ TMP		:=
 
 # ******************************** CONFIG ************************************ #
 
-# Dependencies:
+# Dependencies - has to be the basename of the corresponding .mk file:
 DEPS	:=
 
 # Directory of source files in src/ directory:
@@ -108,12 +108,11 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 
 # **************************************************************************** #
 
-# Creates the final SRC variable and assigns the source files specified above.
-$(eval SRC_$(FILENAME)	:=	$(TMP))
+# Creates a final SRC variable and assigns all the source files specified above.
+$(eval SRC_$(FILENAME)		:=	$(TMP))
 
 # Creates an OBJ variable for the dependency rule below.
-$(eval OBJ_$(FILENAME)	:=	$(SRC_$(FILENAME):%.c=$O%.o))
+$(eval OBJ_$(FILENAME)		:=	$(SRC_$(FILENAME):%.c=$O%.o))
 
 # Makes this file's object files dependent on any DEPS specified above.
-# Requires a general rule how to compile object files somewhere.
-$(OBJ_$(FILENAME)):	$O%.o	:	$(foreach X,$(DEPENDENCIES),$(OBJ_$X))
+$(OBJ_$(FILENAME)):	$O%.o	:	$(foreach dep,$(DEPS),$(OBJ_$(dep)))

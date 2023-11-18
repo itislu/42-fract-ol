@@ -25,8 +25,10 @@ O			:=		$Bobj/
 # Source files directory:
 S			:=		src/
 
-# Makefiles in build/ directory with source file listings to be included:
-SOURCELIST	:=		libft.mk ft_printf.mk
+# Makefiles in build/ directory with source file listings to be included
+# (files that are dependent on others need to be below their dependency):
+SOURCELISTS	:=		libft.mk \
+					ft_printf.mk \
 
 # Flags:
 CC			:=		cc
@@ -36,9 +38,9 @@ ARFLAGS		:=		rcs
 
 #******************************************************************************#
 
-.PHONY			:	all cleandep cleanobj clean fclean re debug norm
+.DEFAULT_GOAL	:=	all
 
-all				:	$(NAME)
+include				$(addprefix $B,$(SOURCELISTS))
 
 include				$(addprefix $B,$(SOURCELIST))
 
@@ -48,6 +50,10 @@ DEP				:=	$(SRC:%.c=$D%.d)
 OBJ				:=	$(SRC:%.c=$O%.o)
 SUBDIRS_D		:=	$(sort $(dir $(DEP)))
 SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
+
+.PHONY			:	all cleandep cleanobj clean fclean re debug norm print-%
+
+all				:	$(NAME)
 
 $(NAME)			:	$(OBJ)
 					ar $(ARFLAGS) $(NAME) $(OBJ)
