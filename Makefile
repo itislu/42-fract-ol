@@ -36,13 +36,13 @@ all:			lib $(NAME)
 bonus:			all
 
 lib:
-ifeq ($(filter $(MAKECMDGOALS),debug),)
+ifeq (,$(filter debug,$(MAKECMDGOALS)))
 	@			make -C $L --no-print-directory
 endif
 
 $(NAME):		$L $(OBJ)
-				$(CC) $(CFLAGS) $(OBJ) $(foreach X,$L,-L$X) \
-				$(foreach X,$l,-l$X) -o $(NAME)
+				$(CC) $(CFLAGS) $(OBJ) $(addprefix -L,$L) $(addprefix -l,$l) \
+				-o $(NAME)
 
 $(OBJ): $O%.o:	%.c | $O
 				$(CC) $(CFLAGS) -c $< -o $@
@@ -86,12 +86,12 @@ debuglib:
 				make -C $L debug
 
 norm:
-				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
-				$(SRC) $(foreach X,$I,$X*.h)
+	@			-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+				$(foreach src,$(SRC),$S$(src)) $(foreach dir,$I,$(dir)*.h)
 	@			make -C $L norm --no-print-directory
 
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
--include 		$(DEP)
+ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
+    -include 	$(DEP)
 endif
 
 # Makefile debugging

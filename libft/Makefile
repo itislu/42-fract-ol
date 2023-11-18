@@ -42,9 +42,7 @@ ARFLAGS		:=		rcs
 
 include				$(addprefix $B,$(SOURCELISTS))
 
-include				$(addprefix $B,$(SOURCELIST))
-
-SRC				:=	$(foreach VAR,$(basename $(SOURCELIST)),$(SRC_$(VAR)))
+SRC				:=	$(foreach name,$(basename $(SOURCELISTS)),$(SRC_$(name)))
 
 DEP				:=	$(SRC:%.c=$D%.d)
 OBJ				:=	$(SRC:%.c=$O%.o)
@@ -86,11 +84,11 @@ debug			:	re
 norm			:	# Prolly need to change the message now
 	@				read -p "Press Enter to check $$(basename "$$(pwd)")..." \
 					userInput;
-					-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
-					$(SRC) $(foreach X,$I,$X*.h)
+	@				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+					$(foreach src,$(SRC),$S$(src)) $(foreach dir,$I,$(dir)*.h)
 
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
--include 			$(DEP)
+ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
+    -include 		$(DEP)
 endif
 
 # *************************** MAKEFILE DEBUGGING ***************************** #
