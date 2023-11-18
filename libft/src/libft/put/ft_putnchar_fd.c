@@ -6,11 +6,22 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:12:04 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 19:26:22 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/18 19:39:02 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+/**
+ * The ft_putnchar_fd function writes a character n times to the given file
+ * descriptor.
+ *
+ * @param c  The character to write.
+ * @param n  The number of times to write the character.
+ * @param fd The file descriptor to write to.
+ *
+ * @return It always returns the number of characters written.
+ */
+
+#include "libft.h"
 
 size_t	ft_putnchar_fd(unsigned char c, size_t n, int fd)
 {

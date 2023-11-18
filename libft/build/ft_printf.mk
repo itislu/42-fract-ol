@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:22 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/17 15:05:13 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/18 16:37:01 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,6 @@ DIR		:=	ft_printf/
 # Source files:
 TMP		+=	$(addprefix $(DIR), \
 			ft_printf.c \
-			ft_putnbr_base_fd.c \
-			ft_putnchar_fd.c \
-			ft_putnstr_fd.c \
 			print_char.c \
 			print_nbr.c \
 			print_parsed.c \
