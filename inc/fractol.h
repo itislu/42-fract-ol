@@ -49,6 +49,7 @@ typedef struct	s_mlx
 	void	*xvar;
 	void	*win;
 	void	*img;
+	t_data	data;
 }	t_mlx;
 
 #endif

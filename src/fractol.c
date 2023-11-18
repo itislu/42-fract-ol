@@ -182,24 +182,24 @@ void draw_julia(t_data *data, int max_iteration, double escape_radius)
 	}
 }
 
-int render_mandelbrot(t_data *data, t_mlx *mlx)
+int render_mandelbrot(t_mlx *mlx)
 {
-	if (data->redraw_needed)
+	if (mlx->data.redraw_needed)
 	{
-		draw_mandelbrot(data, 272);
+		draw_mandelbrot(&mlx->data, 272);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		data->redraw_needed = 0;
+		mlx->data.redraw_needed = 0;
 	}
 	return (0);
 }
 
-int render_julia(t_data *data, t_mlx *mlx)
+int render_julia(t_mlx *mlx)
 {
-	if (data->redraw_needed)
+	if (mlx->data.redraw_needed)
 	{
-		draw_julia(data, 128, 2.0);
+		draw_julia(&mlx->data, 128, 2.0);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		data->redraw_needed = 0;
+		mlx->data.redraw_needed = 0;
 	}
 	return (0);
 }
@@ -278,20 +278,19 @@ int	parse_arguments(int argc, char *argv[], t_data *data)
 int main(int argc, char *argv[])
 {
 	t_mlx	mlx;
-	t_data	data;
 
 	/* Set default view */
-	data.zoom_factor = 1;
-	data.x_min = -2.0;
-	data.x_max = 1.0;
-	data.y_min = -1.5;
-	data.y_max = 1.5;
-	data.redraw_needed = 1;
+	mlx.data.zoom_factor = 1;
+	mlx.data.x_min = -2.0;
+	mlx.data.x_max = 1.0;
+	mlx.data.y_min = -1.5;
+	mlx.data.y_max = 1.5;
+	mlx.data.redraw_needed = 1;
 
 	/* Print out how to use the program */
 
 	/* Arguments Check */
-	if (!parse_arguments(argc, argv, &data))
+	if (!parse_arguments(argc, argv, &mlx.data))
 		return (ARG_ERROR);	// Potentially "display a list of available parameters"
 
 	/* MLX Initialization */
@@ -304,18 +303,18 @@ int main(int argc, char *argv[])
 	mlx.img = mlx_new_image(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!mlx.img)
 		clean_exit(&mlx, MLX_ERROR);
-	data.data = mlx_get_data_addr(mlx.img, &data.bits_per_pixel, &data.size_line, &data.endian);
+	mlx.data.data = mlx_get_data_addr(mlx.img, &mlx.data.bits_per_pixel, &mlx.data.size_line, &mlx.data.endian);
 
 	/* Key Events */
 	mlx_hook(mlx.win, KeyPress, KeyPressMask, key_handling, &mlx);
 	mlx_hook(mlx.win, DestroyNotify, NoEventMask, clean_exit, &mlx);
-	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &data);
+	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &mlx.data);
 
 	/* Loop render */
-	if (data.set == MANDELBROT)
-		mlx_loop_hook(mlx.xvar, render_mandelbrot(&data, &mlx), &data);
-	else if (data.set == JULIA)
-		mlx_loop_hook(mlx.xvar, render_julia(&data, &mlx), &data);
+	if (mlx.data.set == MANDELBROT)
+		mlx_loop_hook(mlx.xvar, render_mandelbrot, &mlx);
+	else if (mlx.data.set == JULIA)
+		mlx_loop_hook(mlx.xvar, render_julia, &mlx);
 	mlx_loop(mlx.xvar);
 
 	return 0;
