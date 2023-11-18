@@ -67,17 +67,27 @@ $(SUBDIRS_O) $(SUBDIRS_D):
 	@				mkdir -p $@
 
 cleandep		:
-	@				rm -f $(DEP)
+ifneq (,$(wildcard $(DEP)))
+					rm -f $(DEP)
+endif
+ifneq (,$(wildcard $D))
 					-find $(D) -type d -empty -delete
+endif
 
 cleanobj		:
-	@				rm -f $(OBJ)
+ifneq (,$(wildcard $(OBJ)))
+					rm -f $(OBJ)
+endif
+ifneq (,$(wildcard $O))
 					-find $(O) -type d -empty -delete
+endif
 
 clean			:	cleandep cleanobj
 
 fclean			:	clean
+ifneq (,$(wildcard $(NAME)))
 					rm -f $(NAME)
+endif
 
 re				:	fclean all
 

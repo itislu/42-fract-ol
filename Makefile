@@ -88,8 +88,12 @@ ifneq ($(LAST_TARGET),debug)
     ifeq (,$(filter clean fclean re debug,$(MAKECMDGOALS)))
 					make -C $L cleandep
     endif
-	@				rm -f $(DEP)
+    ifneq (,$(wildcard $(DEP)))
+					rm -f $(DEP)
+    endif
+    ifneq (,$(wildcard $D))
 					-find $(D) -type d -empty -delete
+    endif
 endif
 
 cleanobj		:
@@ -97,8 +101,12 @@ ifneq ($(LAST_TARGET),debug)
     ifeq (,$(filter clean fclean re debug,$(MAKECMDGOALS)))
 					make -C $L cleanobj
     endif
-	@				rm -f $(OBJ)
+    ifneq (,$(wildcard $(OBJ)))
+					rm -f $(OBJ)
+    endif
+    ifneq (,$(wildcard $O))
 					-find $(O) -type d -empty -delete
+    endif
 endif
 
 clean			:	cleandep cleanobj
@@ -112,8 +120,12 @@ fclean			:	clean
 ifeq (,$(filter debug,$(MAKECMDGOALS)))
 					make -C $L fclean
 endif
-	@				rm -f $B.last_target
+ifneq (,$(wildcard $B.last_target))
+					rm -f $B.last_target
+endif
+ifneq (,$(wildcard $(NAME)))
 					rm -f $(NAME)
+endif
 
 re				:	fclean all
 
