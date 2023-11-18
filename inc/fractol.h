@@ -1,7 +1,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-//# include "libft.h"
+# include "libft.h"
 # include <mlx.h>
 # include <stdlib.h>
 # include <X11/X.h>
@@ -12,7 +12,7 @@
 
 /* temporary */
 #include <stdio.h>
-#include "libft/inc/libft.h"
+#include "ft_printf.h"
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
