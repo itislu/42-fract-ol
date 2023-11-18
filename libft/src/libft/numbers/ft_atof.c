@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 12:15:31 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/13 16:09:47 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/18 23:54:14 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ double	ft_atof(const char *nptr)
 	sign = 1;
 	if (*nptr == '-' || *nptr == '+')
 	{
-		if (*nptr == '-')
+		if (*nptr == '-' && (ft_isdigit(*(nptr + 1))
+				|| (*(nptr + 1) == '.' && ft_isdigit(*(nptr + 2)))))
 			sign = -1;
 		nptr++;
 	}
@@ -35,11 +36,8 @@ double	ft_atof(const char *nptr)
 		nptr++;
 	}
 	if (*nptr == '.')
-	{
-		nptr++;
-		if (ft_isdigit(*nptr))
+		if (ft_isdigit(*++nptr))
 			n += decimal_places(nptr);
-	}
 	return (n * sign);
 }
 
