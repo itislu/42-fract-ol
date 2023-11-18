@@ -6,138 +6,109 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 18:49:45 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/18 13:27:26 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-export NAME	=	libft.a
-I			=	./ ft_printf/
-L			=	ft_printf/
-D			=	_build/dep/
-O			=	_build/obj/
+# ***************************** CONFIGURATION ******************************** #
 
-SRC			=	ft_atoi.c \
-				ft_bzero.c \
-				ft_calloc.c \
-				ft_isalnum.c \
-				ft_isalpha.c \
-				ft_isascii.c \
-				ft_isdigit.c \
-				ft_isprint.c \
-				ft_memchr.c \
-				ft_memcmp.c \
-				ft_memcpy.c \
-				ft_memmove.c \
-				ft_memset.c \
-				ft_strchr.c \
-				ft_strdup.c \
-				ft_strlcat.c \
-				ft_strlcpy.c \
-				ft_strlen.c \
-				ft_strncmp.c \
-				ft_strnstr.c \
-				ft_strrchr.c \
-				ft_tolower.c \
-				ft_toupper.c \
-				\
-				ft_itoa.c \
-				ft_putchar_fd.c \
-				ft_putendl_fd.c \
-				ft_putnbr_fd.c \
-				ft_putstr_fd.c \
-				ft_split.c \
-				ft_striteri.c \
-				ft_strjoin.c \
-				ft_strmapi.c \
-				ft_strtrim.c \
-				ft_substr.c \
-				\
-				ft_lstadd_back.c \
-				ft_lstadd_front.c \
-				ft_lstclear.c \
-				ft_lstdelone.c \
-				ft_lstiter.c \
-				ft_lstlast.c \
-				ft_lstmap.c \
-				ft_lstnew.c \
-				ft_lstsize.c \
-				\
-				ft_atof.c \
-				ft_isspace.c \
-				ft_strcmp.c \
-				ft_strmatches_any.c
+NAME		:=		libft.a
 
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$X)
-DEBUGFLAGS	=	-g
-ARFLAGS		=	rcs
+# Header files directory:
+I			:=		inc/
 
-DEP			=	$(SRC:%.c=$D%.d)
-OBJ			=	$(SRC:%.c=$O%.o)
+# Build directories:
+B			:=		build/
+D			:=		$B_dep/
+O			:=		$B_obj/
 
-.PHONY:			all lib cleandep cleanobj clean fclean re debug debuglib norm
+# Source files directory:
+S			:=		src/
 
-all:			$(NAME) lib
+# Makefiles in build/ directory with source file listings to be included
+# (files that are dependent on others need to be below their dependency):
+SOURCELISTS	:=		libft.mk \
+					ft_printf.mk \
+					get_next_line.mk \
 
-lib:
-ifeq ($(filter $(MAKECMDGOALS),debug),)
-				@make -C $L --no-print-directory
+# Flags:
+CC			:=		cc
+CFLAGS		:=		-Wall -Wextra -Werror $(addprefix -I,$I)
+DEBUGFLAGS	:=		-g
+ARFLAGS		:=		rcs
+
+# ***************************** BUILD PROCESS ******************************** #
+
+.DEFAULT_GOAL	:=	all
+
+include				$(addprefix $B,$(SOURCELISTS))
+
+SRC				:=	$(foreach name,$(basename $(SOURCELISTS)),$(SRC_$(name)))
+
+DEP				:=	$(SRC:%.c=$D%.d)
+OBJ				:=	$(SRC:%.c=$O%.o)
+SUBDIRS_D		:=	$(sort $(dir $(DEP)))
+SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
+
+.PHONY			:	all cleandep cleanobj clean fclean re debug norm print-%
+
+all				:	$(NAME)
+
+$(NAME)			:	$(OBJ)
+					ar $(ARFLAGS) $(NAME) $(OBJ)
+
+$(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
+					$(CC) $(CFLAGS) -c $< -o $@
+
+$(DEP):	$D%.d	:	$S%.c | $(SUBDIRS_D)
+	@				$(CC) $(CFLAGS) -M -MP -MF $@ -MT "$O$*.o $@" $<
+
+$(SUBDIRS_O) $(SUBDIRS_D):
+	@				mkdir -p $@
+
+cleandep		:
+ifneq (,$(wildcard $(DEP)))
+					rm -f $(DEP)
+endif
+ifneq (,$(wildcard $D))
+					-find $(D) -type d -empty -delete
 endif
 
-$(NAME):		$(OBJ)
-				ar $(ARFLAGS) $(NAME) $(OBJ)
-ifeq ($(filter $(MAKECMDGOALS),re),)
-				@make -C $L re
+cleanobj		:
+ifneq (,$(wildcard $(OBJ)))
+					rm -f $(OBJ)
+endif
+ifneq (,$(wildcard $O))
+					-find $(O) -type d -empty -delete
 endif
 
-$(OBJ): $O%.o:	%.c | $O
-				$(CC) $(CFLAGS) -c $< -o $@
+clean			:	cleandep cleanobj
 
-$(DEP): $D%.d:	%.c | $D
-				@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
-
-$O $D:
-				@mkdir -p $@
-
-cleandep:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
-				make -C $L cleandep
+fclean			:	clean
+ifneq (,$(wildcard $(NAME)))
+					rm -f $(NAME)
 endif
-				rm -rf $D
 
-cleanobj:
-ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
-				make -C $L cleanobj
+re				:	fclean all
+
+debug			:	CFLAGS += $(DEBUGFLAGS)
+debug			:	re
+
+#TODO: prolly need to change the message now
+norm			:
+	@				read -p "Press Enter to check $$(basename "$$(pwd)")..." \
+					userInput;
+	@				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+					$(addprefix $S,$(SRC)) $(foreach dir,$I,$(dir)*.h)
+
+ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
+    ifneq (,$(wildcard $O))
+        -include	$(DEP)
+    endif
 endif
-				rm -rf $O
 
-clean:			cleandep cleanobj
-ifeq ($(filter $(MAKECMDGOALS),fclean re debug),)
-				make -C $L clean
-endif
-				rm -rf _build/
+# *************************** MAKEFILE DEBUGGING ***************************** #
 
-fclean:			clean
-ifeq ($(filter $(MAKECMDGOALS),debug),)
-				make -C $L fclean
-endif
-				rm -f $(NAME)
-
-re:				fclean all
-
-debug:			CFLAGS += $(DEBUGFLAGS)
-debug:			debuglib re
-
-debuglib:
-				make -C $L debug
-
-norm:
-				@read -p "Press Enter to check $$(basename "$$(pwd)")..." \
-				userInput;
-				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
-				$(SRC) $(foreach X,$I,$X*.h)
-				@make -C $L norm --no-print-directory
-
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean norm),)
--include 		$(DEP)
-endif
+# Prints the values of the variable given after the minus.
+print-%			:
+	@				echo $* = $($*)

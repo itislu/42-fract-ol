@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:08 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/14 09:59:50 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:36:23 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ typedef struct s_struct
 }	t_struct;
 
 int		ft_printf(const char *format, ...);
-int		ft_putnbr_base_fd(long n, const char *base, int fd);
-size_t	ft_putnchar_fd(unsigned char c, size_t n, int fd);
-size_t	ft_putnstr_fd(const char *s, size_t n, int fd);
 int		print_char(unsigned char c, t_struct *f);
 int		print_nbr(long nbr, t_struct *f);
 int		print_parsed(const char *format, int parsed, t_struct *f);
