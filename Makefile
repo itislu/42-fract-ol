@@ -134,7 +134,9 @@ norm			:
 	@				make -C $L norm --no-print-directory
 
 ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
-    -include 		$(DEP)
+    ifneq (,$(wildcard $O))
+        -include	$(DEP)
+    endif
 endif
 
 # *************************** MAKEFILE DEBUGGING ***************************** #

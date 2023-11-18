@@ -92,7 +92,9 @@ norm			:
 					$(addprefix $S,$(SRC)) $(foreach dir,$I,$(dir)*.h)
 
 ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
-    -include 		$(DEP)
+    ifneq (,$(wildcard $O))
+        -include	$(DEP)
+    endif
 endif
 
 # *************************** MAKEFILE DEBUGGING ***************************** #
