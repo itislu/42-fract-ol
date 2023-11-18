@@ -67,11 +67,11 @@ $(SUBDIRS_O) $(SUBDIRS_D):
 	@				mkdir -p $@
 
 cleandep		:
-					@rm -f $(DEP)
+	@				rm -f $(DEP)
 					-find $(D) -type d -empty -delete
 
 cleanobj		:
-					@rm -f $(OBJ)
+	@				rm -f $(OBJ)
 					-find $(O) -type d -empty -delete
 
 clean			:	cleandep cleanobj
@@ -99,4 +99,4 @@ endif
 
 # Prints the values of the variable given after the minus.
 print-%			:
-					@echo $* = $($*)
+	@				echo $* = $($*)

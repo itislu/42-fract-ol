@@ -88,7 +88,7 @@ ifneq ($(LAST_TARGET),debug)
     ifeq (,$(filter clean fclean re debug,$(MAKECMDGOALS)))
 					make -C $L cleandep
     endif
-					@rm -f $(DEP)
+	@				rm -f $(DEP)
 					-find $(D) -type d -empty -delete
 endif
 
@@ -97,7 +97,7 @@ ifneq ($(LAST_TARGET),debug)
     ifeq (,$(filter clean fclean re debug,$(MAKECMDGOALS)))
 					make -C $L cleanobj
     endif
-					@rm -f $(OBJ)
+	@				rm -f $(OBJ)
 					-find $(O) -type d -empty -delete
 endif
 
@@ -119,7 +119,7 @@ re				:	fclean all
 
 debug			:	CFLAGS += $(DEBUGFLAGS)
 debug			:	debuglib re
-					@echo "$@" > $B.last_target
+	@				echo "$@" > $B.last_target
 
 debuglib		:
 					make -C $L debug
@@ -141,4 +141,4 @@ endif
 
 # Makefile debugging
 print-%			:
-					@echo $* = $($*)
+	@				echo $* = $($*)

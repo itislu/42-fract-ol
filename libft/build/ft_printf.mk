@@ -55,4 +55,4 @@ $(OBJ_$(FILENAME)):	$O%.o	:	$(foreach dep,$(DEPS),$(OBJ_$(dep)))
 
 # Prints the values of the variable given after the minus.
 print-%			:
-					@echo $* = $($*)
+	@				echo $* = $($*)
