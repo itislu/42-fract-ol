@@ -162,6 +162,18 @@ void draw_julia(t_data *data, int max_iteration, double escape_radius)
 			// Map the number of iterations to a color (adjust as needed)
 			if (iteration == max_iteration)
 				color = 0;
+			// else if (iteration < max_iteration / 3)
+			// 	color = (iteration << 16);
+			// else if (iteration < max_iteration / 3 * 2)
+			// 	color = (iteration << 8);
+			// else if (iteration < max_iteration)
+			// 	color = (iteration << 0);
+			else
+			{
+				double abs_z = z.real * z.real + z.imag * z.imag;
+				color = iteration + 1 - log(log(abs_z)) / log(2.0);
+			}
+
 			img_pixel_put(data, j, i, (color * 0x00110055) % 0x00CCCCCC);
 
 			j++;
