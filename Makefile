@@ -16,8 +16,9 @@ NAME		=	fractol
 I			=	./ libft/inc/
 L			=	libft/
 l			=	ft mlx Xext X11 m
-D			=	_build/dep/
-O			=	_build/obj/
+B			=	build/
+D			=	$B_dep/
+O			=	$B_obj/
 
 SRC			=	fractol.c \
 
@@ -56,20 +57,21 @@ $O $D:
 cleandep:
 ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
 				make -C $L cleandep
+				@rm -f $(DEP)
+				-find $(D) -type d -empty -delete
 endif
-				rm -rf $D
 
 cleanobj:
 ifeq ($(filter $(MAKECMDGOALS),clean fclean re debug),)
 				make -C $L cleanobj
+				@rm -f $(OBJ)
+				-find $(O) -type d -empty -delete
 endif
-				rm -rf $O
 
 clean:			cleandep cleanobj
 ifeq ($(filter $(MAKECMDGOALS),fclean re debug),)
 				make -C $L clean
 endif
-				rm -rf _build/
 
 fclean:			clean
 ifeq ($(filter $(MAKECMDGOALS),debug),)

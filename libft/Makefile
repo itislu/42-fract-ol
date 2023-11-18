@@ -19,8 +19,8 @@ I			:=		inc/
 
 # Build directories:
 B			:=		build/
-D			:=		$Bdep/
-O			:=		$Bobj/
+D			:=		$B_dep/
+O			:=		$B_obj/
 
 # Source files directory:
 S			:=		src/
@@ -66,10 +66,12 @@ $(SUBDIRS_D) $(SUBDIRS_O):
 	@				mkdir -p $@
 
 cleandep		:
-					rm -rf $D
+					@rm -f $(DEP)
+					-find $(D) -type d -empty -delete
 
 cleanobj		:
-					rm -rf $O
+					@rm -f $(OBJ)
+					-find $(O) -type d -empty -delete
 
 clean			:	cleandep cleanobj
 
