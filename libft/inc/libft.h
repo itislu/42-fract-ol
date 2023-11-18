@@ -13,7 +13,6 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "ft_printf.h"	// tbd
 # include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
