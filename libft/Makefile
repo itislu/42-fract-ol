@@ -29,10 +29,11 @@ S			:=		src/
 # (files that are dependent on others need to be below their dependency):
 SOURCELISTS	:=		libft.mk \
 					ft_printf.mk \
+					get_next_line.mk \
 
 # Flags:
 CC			:=		cc
-CFLAGS		:=		-Wall -Wextra -Werror $(foreach X,$I,-I$X)
+CFLAGS		:=		-Wall -Wextra -Werror $(foreach dir,$I,-I$(dir))
 DEBUGFLAGS	:=		-g
 ARFLAGS		:=		rcs
 
