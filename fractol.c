@@ -21,7 +21,7 @@ int key_handling(int keysymbol, t_mlx *mlx)
 	return (0);
 }
 
-int zoom(int button, int x, int y, t_mlx *mlx)
+int zoom(int button, int x, int y, t_data *data)
 {
 	double	mouse_x_percent;
 	double	mouse_y_percent;
@@ -30,42 +30,42 @@ int zoom(int button, int x, int y, t_mlx *mlx)
 
 	if (button == Button4)
 	{
-		mlx->zoom_factor = 0.95;
+		data->zoom_factor = 0.95;
 	}
 	else if (button == Button5)
 	{
-		mlx->zoom_factor = 1.05;
+		data->zoom_factor = 1.05;
 	}
 	if (button == Button4 || button == Button5)
 	{
 		mouse_x_percent = (double)x / WINDOW_WIDTH;
 		mouse_y_percent = (double)y / WINDOW_HEIGHT;
 
-		x_range = mlx->x_max - mlx->x_min;
-		y_range = mlx->y_max - mlx->y_min;
+		x_range = data->x_max - data->x_min;
+		y_range = data->y_max - data->y_min;
 
-		mlx->x_min = mlx->x_min + x_range * (1 - mlx->zoom_factor) * mouse_x_percent;
-		mlx->x_max = mlx->x_min + x_range * mlx->zoom_factor;
+		data->x_min = data->x_min + x_range * (1 - data->zoom_factor) * mouse_x_percent;
+		data->x_max = data->x_min + x_range * data->zoom_factor;
 
-		mlx->y_min = mlx->y_min + y_range * (1 - mlx->zoom_factor) * mouse_y_percent;
-		mlx->y_max = mlx->y_min + y_range * mlx->zoom_factor;
+		data->y_min = data->y_min + y_range * (1 - data->zoom_factor) * mouse_y_percent;
+		data->y_max = data->y_min + y_range * data->zoom_factor;
 
-		mlx->redraw_needed = 1;
+		data->redraw_needed = 1;
 	}
 
 	return (0);
 }
 
-void img_pixel_put(t_mlx *mlx, int x, int y, int color)
+void img_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*pixel;
 	int		i;
 	int		next_byte;
 
-	pixel = mlx->data + (y * mlx->size_line + x * (mlx->bits_per_pixel / 8));
-	if (mlx->endian)
+	pixel = data->data + (y * data->size_line + x * (data->bits_per_pixel / 8));
+	if (data->endian)
 	{
-		i = mlx->bits_per_pixel;
+		i = data->bits_per_pixel;
 		next_byte = -8;
 	}
 	else
@@ -73,14 +73,14 @@ void img_pixel_put(t_mlx *mlx, int x, int y, int color)
 		i = 0;
 		next_byte = 8;
 	}
-	while (i != mlx->bits_per_pixel)
+	while (i != data->bits_per_pixel)
 	{
 		*pixel++ = (color >> i) & 0XFF;
 		i += next_byte;
 	}
 }
 
-void draw_mandelbrot(t_mlx *mlx, int max_iteration)
+void draw_mandelbrot(t_data *data, int max_iteration)
 {
 	int			iteration;
 	int			color;
@@ -97,8 +97,8 @@ void draw_mandelbrot(t_mlx *mlx, int max_iteration)
 		while (j < WINDOW_WIDTH)
 		{
 			// Map pixel coordinates to complex plane coordinates
-			c.real = mlx->x_min + (mlx->x_max - mlx->x_min) * j / (WINDOW_WIDTH - 1.0);
-			c.imag = mlx->y_min + (mlx->y_max - mlx->y_min) * i / (WINDOW_HEIGHT - 1.0);
+			c.real = data->x_min + (data->x_max - data->x_min) * j / (WINDOW_WIDTH - 1.0);
+			c.imag = data->y_min + (data->y_max - data->y_min) * i / (WINDOW_HEIGHT - 1.0);
 			z.real = 0;
 			z.imag = 0;
 
@@ -121,7 +121,7 @@ void draw_mandelbrot(t_mlx *mlx, int max_iteration)
 			else if (iteration < max_iteration)
 				color = (iteration << 0);
 
-			img_pixel_put(mlx, j, i, color * 50);
+			img_pixel_put(data, j, i, color * 50);
 
 			j++;
 		}
@@ -129,15 +129,14 @@ void draw_mandelbrot(t_mlx *mlx, int max_iteration)
 	}
 }
 
-void draw_julia(t_mlx *mlx, int max_iteration, double escape_radius)
+void draw_julia(t_data *data, int max_iteration, double escape_radius)
 {
 	int			iteration;
 	int			color;
 	int			i;
 	int			j;
-	t_complex	c;
-	t_complex	z;
-	t_complex	z_temp;
+	t_complex	z;		// Might be more efficient if it's in the data struct and
+	t_complex	z_temp;	// doesn't need to be created every call.
 
 	i = 0;
 	while (i < WINDOW_HEIGHT)
@@ -146,16 +145,16 @@ void draw_julia(t_mlx *mlx, int max_iteration, double escape_radius)
 		while (j < WINDOW_WIDTH)
 		{
 			// Map pixel coordinates to complex plane coordinates
-			c.real = -0.79; //mlx->mouse_x;		// should fluctuate between [-2,2]
-			c.imag = 0.23; //mlx->mouse_y;		// should fluctuate between [-2,2]
-			z.real = mlx->x_min + (mlx->x_max - mlx->x_min) * j / (WINDOW_WIDTH - 1.0);
-			z.imag = mlx->y_min + (mlx->y_max - mlx->y_min) * i / (WINDOW_HEIGHT - 1.0);
+			//data->c_default.real = 0.355; //data->mouse_x;		// should fluctuate between [-2,2]
+			//data->c_default.imag = 0.355; //data->mouse_y;		// should fluctuate between [-2,2]
+			z.real = data->x_min + (data->x_max - data->x_min) * j / (WINDOW_WIDTH - 1.0);
+			z.imag = data->y_min + (data->y_max - data->y_min) * i / (WINDOW_HEIGHT - 1.0);
 
 			iteration = 0;
 			while (z.real * z.real + z.imag * z.imag < escape_radius * escape_radius && iteration < max_iteration)
 			{
-				z_temp.real = z.real * z.real - z.imag * z.imag + c.real;
-				z_temp.imag = 2.0 * z.real * z.imag + c.imag;
+				z_temp.real = z.real * z.real - z.imag * z.imag + data->c_default.real;
+				z_temp.imag = 2.0 * z.real * z.imag + data->c_default.imag;
 				z = z_temp;
 				iteration++;
 			}
@@ -163,14 +162,7 @@ void draw_julia(t_mlx *mlx, int max_iteration, double escape_radius)
 			// Map the number of iterations to a color (adjust as needed)
 			if (iteration == max_iteration)
 				color = 0;
-			else if (iteration < max_iteration / 3)
-				color = (iteration << 16);
-			else if (iteration < max_iteration / 3 * 2)
-				color = (iteration << 8);
-			else if (iteration < max_iteration)
-				color = (iteration << 0);
-
-			img_pixel_put(mlx, j, i, color * 50);
+			img_pixel_put(data, j, i, (color * 0x00110055) % 0x00CCCCCC);
 
 			j++;
 		}
@@ -178,24 +170,24 @@ void draw_julia(t_mlx *mlx, int max_iteration, double escape_radius)
 	}
 }
 
-int render_mandelbrot(t_mlx *mlx)
+int render_mandelbrot(t_data *data, t_mlx *mlx)
 {
-	if (mlx->redraw_needed)
+	if (data->redraw_needed)
 	{
-		draw_mandelbrot(mlx, 0x110);
+		draw_mandelbrot(data, 272);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		mlx->redraw_needed = 0;
+		data->redraw_needed = 0;
 	}
 	return (0);
 }
 
-int render_julia(t_mlx *mlx)
+int render_julia(t_data *data, t_mlx *mlx)
 {
-	if (mlx->redraw_needed)
+	if (data->redraw_needed)
 	{
-		draw_julia(mlx, 0x110, 2.0);
+		draw_julia(data, 128, 2.0);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		mlx->redraw_needed = 0;
+		data->redraw_needed = 0;
 	}
 	return (0);
 }
@@ -243,28 +235,28 @@ int	parse_julia_values(int argc, char *argv[], t_complex *c_default)
 	return (0);
 }
 
-int	parse_arguments(int argc, char *argv[], t_mlx *mlx)
+int	parse_arguments(int argc, char *argv[], t_data *data)
 {
 	if (argc < 2)
 		return (0);
 	if (ft_strmatches_any(argv[1], 4, "m", "M", "mandelbrot", "Mandelbrot"))
 	{
-		mlx->set = MANDELBROT;
-		mlx->c_default.real = (mlx->x_max - mlx->x_min) / (WINDOW_WIDTH - 1.0);	// -1.0 really needed?
-		mlx->c_default.imag = (mlx->y_max - mlx->y_min) / (WINDOW_HEIGHT - 1.0);
+		data->set = MANDELBROT;
+		data->c_default.real = (data->x_max - data->x_min) / (WINDOW_WIDTH - 1.0);	// -1.0 really needed?
+		data->c_default.imag = (data->y_max - data->y_min) / (WINDOW_HEIGHT - 1.0);
 		if (argc > 2)
 			ft_printf("%s\n", "No need for additional arguments ;)");
 		return (1);
 	}
 	if (ft_strmatches_any(argv[1], 4, "j", "J", "julia", "Julia"))
 	{
-		mlx->set = JULIA;
+		data->set = JULIA;
 		if (argc == 2)
 		{
-			mlx->c_default.real = -0.79;
-			mlx->c_default.imag = 0.23;
+			data->c_default.real = -0.79;
+			data->c_default.imag = 0.23;
 		}
-		else if (!parse_julia_values(argc, argv, &mlx->c_default))
+		else if (!parse_julia_values(argc, argv, &data->c_default))
 			return (0);
 		return (1);
 	}
@@ -273,13 +265,21 @@ int	parse_arguments(int argc, char *argv[], t_mlx *mlx)
 
 int main(int argc, char *argv[])
 {
-	t_mlx mlx;
+	t_mlx	mlx;
+	t_data	data;
 
+	/* Set default view */
+	data.zoom_factor = 1;
+	data.x_min = -2.0;
+	data.x_max = 1.0;
+	data.y_min = -1.5;
+	data.y_max = 1.5;
+	data.redraw_needed = 1;
 
 	/* Print out how to use the program */
 
 	/* Arguments Check */
-	if (!parse_arguments(argc, argv, &mlx))
+	if (!parse_arguments(argc, argv, &data))
 		return (ARG_ERROR);	// Potentially "display a list of available parameters"
 
 	/* MLX Initialization */
@@ -292,18 +292,18 @@ int main(int argc, char *argv[])
 	mlx.img = mlx_new_image(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!mlx.img)
 		clean_exit(&mlx, MLX_ERROR);
-	mlx.data = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.size_line, &mlx.endian);
+	data.data = mlx_get_data_addr(mlx.img, &data.bits_per_pixel, &data.size_line, &data.endian);
 
 	/* Key Events */
 	mlx_hook(mlx.win, KeyPress, KeyPressMask, key_handling, &mlx);
 	mlx_hook(mlx.win, DestroyNotify, NoEventMask, clean_exit, &mlx);
-	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &mlx);
+	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &data);
 
 	/* Loop render */
-	if (mlx.set == MANDELBROT)
-		mlx_loop_hook(mlx.xvar, render_mandelbrot, &mlx);
-	else if (mlx.set == JULIA)
-		mlx_loop_hook(mlx.xvar, render_julia, &mlx);
+	if (data.set == MANDELBROT)
+		mlx_loop_hook(mlx.xvar, render_mandelbrot(&data, &mlx), &data);
+	else if (data.set == JULIA)
+		mlx_loop_hook(mlx.xvar, render_julia(&data, &mlx), &data);
 	mlx_loop(mlx.xvar);
 
 	return 0;

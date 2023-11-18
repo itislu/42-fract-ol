@@ -27,7 +27,7 @@ typedef struct	s_complex
 	double	imag;
 }	t_complex;
 
-typedef struct	s_mlx
+typedef struct	s_data
 {
 	char	*data;
 	int		bits_per_pixel;
@@ -42,6 +42,10 @@ typedef struct	s_mlx
 	int		redraw_needed;
 	int		set;
 	t_complex	c_default;
+}	t_data;
+
+typedef struct	s_mlx
+{
 	void	*xvar;
 	void	*win;
 	void	*img;
