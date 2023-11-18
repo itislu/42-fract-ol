@@ -200,14 +200,72 @@ int render_julia(t_mlx *mlx)
 	return (0);
 }
 
-int	check_arguments(int argc, char *argv[])
+int	valid_float_arg(char *arg)
+{
+	size_t	len_arg;
+	size_t	len_valid;
+
+	len_arg = ft_strlen(arg);
+	len_valid = 0;
+	while (ft_isdigit(arg[len_valid]))
+		len_valid++;
+	if (arg[len_valid] == '.')
+	{
+		len_valid++;
+		while (ft_isdigit(arg[len_valid]))
+			len_valid++;
+	}
+	if (len_valid == len_arg)
+		return (1);
+	return (0);
+}
+
+int	parse_julia_values(int argc, char *argv[], t_complex *c_default)
+{
+	if (argc == 3)
+	{
+		if (valid_float_arg(argv[2]))
+		{
+			c_default->real = ft_atof(argv[2]);
+			c_default->imag = c_default->real;
+			return (1);
+		}
+	}
+	else
+	{
+		if (valid_float_arg(argv[2]) && valid_float_arg(argv[3]))
+		{
+			c_default->real = ft_atof(argv[2]);
+			c_default->imag = ft_atof(argv[3]);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	parse_arguments(int argc, char *argv[], t_mlx *mlx)
 {
 	if (argc < 2)
-	{
 		return (0);
-	}
-	else if (ft_strcmp(argv[1], "mandelbrot") != 0 || ft_strcmp(argv[1], "julia") != 0)
+	if (ft_strmatches_any(argv[1], 4, "m", "M", "mandelbrot", "Mandelbrot"))
 	{
+		mlx->set = MANDELBROT;
+		mlx->c_default.real = (mlx->x_max - mlx->x_min) / (WINDOW_WIDTH - 1.0);	// -1.0 really needed?
+		mlx->c_default.imag = (mlx->y_max - mlx->y_min) / (WINDOW_HEIGHT - 1.0);
+		if (argc > 2)
+			ft_printf("%s\n", "No need for additional arguments ;)");
+		return (1);
+	}
+	if (ft_strmatches_any(argv[1], 4, "j", "J", "julia", "Julia"))
+	{
+		mlx->set = JULIA;
+		if (argc == 2)
+		{
+			mlx->c_default.real = -0.79;
+			mlx->c_default.imag = 0.23;
+		}
+		else if (!parse_julia_values(argc, argv, &mlx->c_default))
+			return (0);
 		return (1);
 	}
 	return (0);
@@ -217,22 +275,18 @@ int main(int argc, char *argv[])
 {
 	t_mlx mlx;
 
-	mlx.zoom_factor = 1;
-	mlx.x_min = -2.0;
-	mlx.x_max = 1.0;
-	mlx.y_min = -1.5;
-	mlx.y_max = 1.5;
-	mlx.redraw_needed = 1;
+
+	/* Print out how to use the program */
 
 	/* Arguments Check */
-	if (!check_arguments(argc, argv))
-		return (ARG_ERROR);
+	if (!parse_arguments(argc, argv, &mlx))
+		return (ARG_ERROR);	// Potentially "display a list of available parameters"
 
 	/* MLX Initialization */
 	mlx.xvar = mlx_init();
 	if (!mlx.xvar)
 		clean_exit(&mlx, MLX_ERROR);
-	mlx.win = mlx_new_window(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT, "Mandelbrot Set");
+	mlx.win = mlx_new_window(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT, "Fractol");
 	if (!mlx.win)
 		clean_exit(&mlx, MLX_ERROR);
 	mlx.img = mlx_new_image(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -246,9 +300,9 @@ int main(int argc, char *argv[])
 	mlx_hook(mlx.win, ButtonPress, ButtonPressMask, zoom, &mlx);
 
 	/* Loop render */
-	if (ft_strcmp(argv[1], "mandelbrot") == 0)
+	if (mlx.set == MANDELBROT)
 		mlx_loop_hook(mlx.xvar, render_mandelbrot, &mlx);
-	else if (ft_strcmp(argv[1], "julia") == 0)
+	else if (mlx.set == JULIA)
 		mlx_loop_hook(mlx.xvar, render_julia, &mlx);
 	mlx_loop(mlx.xvar);
 

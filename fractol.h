@@ -1,7 +1,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "libft.h"
+//# include "libft.h"
 # include <mlx.h>
 # include <stdlib.h>
 # include <X11/X.h>
@@ -10,19 +10,25 @@
 /* Not yet needed */
 #include <math.h>
 
-/* Not needed */
+/* temporary */
 #include <stdio.h>
+#include "libft/inc/libft.h"
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 800
 # define ARG_ERROR 1
 # define MLX_ERROR 2
+# define MANDELBROT 1
+# define JULIA 2
+
+typedef struct	s_complex
+{
+	double	real;
+	double	imag;
+}	t_complex;
 
 typedef struct	s_mlx
 {
-	void	*xvar;
-	void	*win;
-	void	*img;
 	char	*data;
 	int		bits_per_pixel;
 	int		size_line;
@@ -34,12 +40,11 @@ typedef struct	s_mlx
 	double	y_max;
 	double	zoom_factor;
 	int		redraw_needed;
+	int		set;
+	t_complex	c_default;
+	void	*xvar;
+	void	*win;
+	void	*img;
 }	t_mlx;
-
-typedef struct	s_complex
-{
-	double	real;
-	double	imag;
-}	t_complex;
 
 #endif
