@@ -211,6 +211,10 @@ int	valid_float_arg(char *arg)
 
 	len_arg = ft_strlen(arg);
 	len_valid = 0;
+	while (ft_isspace(arg[len_valid]))
+		len_valid++;
+	if (arg[len_valid] == '-' || arg[len_valid] == '+')
+		len_valid++;
 	while (ft_isdigit(arg[len_valid]))
 		len_valid++;
 	if (arg[len_valid] == '.')
