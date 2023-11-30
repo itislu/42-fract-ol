@@ -29,7 +29,7 @@ typedef struct	s_complex
 
 typedef struct	s_data
 {
-	char	*data;
+	char	*addr;
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;
@@ -51,5 +51,11 @@ typedef struct	s_mlx
 	void	*img;
 	t_data	data;
 }	t_mlx;
+
+typedef struct	s_coord
+{
+	int	x;
+	int	y;
+}	t_coord;
 
 #endif

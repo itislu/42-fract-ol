@@ -29,30 +29,21 @@ int zoom(int button, int x, int y, t_data *data)
 	double	y_range;
 
 	if (button == Button4)
-	{
 		data->zoom_factor = 0.95;
-	}
 	else if (button == Button5)
-	{
 		data->zoom_factor = 1.05;
-	}
 	if (button == Button4 || button == Button5)
 	{
 		mouse_x_percent = (double)x / WINDOW_WIDTH;
 		mouse_y_percent = (double)y / WINDOW_HEIGHT;
-
 		x_range = data->x_max - data->x_min;
 		y_range = data->y_max - data->y_min;
-
 		data->x_min = data->x_min + x_range * (1 - data->zoom_factor) * mouse_x_percent;
 		data->x_max = data->x_min + x_range * data->zoom_factor;
-
 		data->y_min = data->y_min + y_range * (1 - data->zoom_factor) * mouse_y_percent;
 		data->y_max = data->y_min + y_range * data->zoom_factor;
-
 		data->redraw_needed = 1;
 	}
-
 	return (0);
 }
 
@@ -62,7 +53,7 @@ void img_pixel_put(t_data *data, int x, int y, int color)
 	int		i;
 	int		next_byte;
 
-	pixel = data->data + (y * data->size_line + x * (data->bits_per_pixel / 8));
+	pixel = data->addr + (y * data->size_line + x * (data->bits_per_pixel / 8));
 	if (data->endian)
 	{
 		i = data->bits_per_pixel;
@@ -80,105 +71,87 @@ void img_pixel_put(t_data *data, int x, int y, int color)
 	}
 }
 
-void draw_mandelbrot(t_data *data, int max_iteration)
+int	color(int iter, int max_iter, t_complex z)
 {
-	int			iteration;
-	int			color;
-	int			i;
-	int			j;
-	t_complex	c;		// Possibly use math.h for this
-	t_complex	z;
-	t_complex	z_temp;
+	double	abs_z;
+	int		color;
 
-	i = 0;
-	while (i < WINDOW_HEIGHT)
+	if (iter == max_iter)
+		color = 0;
+	else
 	{
-		j = 0;
-		while (j < WINDOW_WIDTH)
+		abs_z = z.real * z.real + z.imag * z.imag;
+		color = iter + 1 - log(log(abs_z)) / log(2.0);
+	}
+	color = (color * 0x00330055) % 0x00CCCCCC;
+	return (color);
+}
+
+t_complex	calculate_next_iteration(t_complex z, t_complex c)
+{
+	t_complex	new_z;
+
+	new_z.real = z.real * z.real - z.imag * z.imag + c.real;
+	new_z.imag = 2.0 * z.real * z.imag + c.imag;
+	return (new_z);
+}
+
+void	map_complexplane_to_window(t_complex *cmpt, t_data *data, t_coord coord)
+{
+	cmpt->real = data->x_min + (data->x_max - data->x_min) * coord.x
+			/ (WINDOW_WIDTH - 1.0);
+	cmpt->imag = data->y_min + (data->y_max - data->y_min) * coord.y
+			/ (WINDOW_HEIGHT - 1.0);
+}
+
+void draw_mandelbrot(t_data *data, int max_iter)
+{
+	int			iter;
+	t_coord		coord;
+	t_complex	c;
+	t_complex	z;
+
+	coord.y = 0;
+	while (coord.y < WINDOW_HEIGHT)
+	{
+		coord.x = 0;
+		while (coord.x < WINDOW_WIDTH)
 		{
-			// Map pixel coordinates to complex plane coordinates
-			c.real = data->x_min + (data->x_max - data->x_min) * j / (WINDOW_WIDTH - 1.0);
-			c.imag = data->y_min + (data->y_max - data->y_min) * i / (WINDOW_HEIGHT - 1.0);
+			map_complexplane_to_window(&c, data, coord);
 			z.real = 0;
 			z.imag = 0;
-
-			iteration = 0;
-			while (z.real * z.real + z.imag * z.imag <= 4.0 && iteration < max_iteration)
-			{
-				z_temp.real = z.real * z.real - z.imag * z.imag + c.real;
-				z_temp.imag = 2.0 * z.real * z.imag + c.imag;
-				z = z_temp;
-				iteration++;
-			}
-
-			// Map the number of iterations to a color (adjust as needed)
-			if (iteration == max_iteration)
-				color = 0;
-			else if (iteration < max_iteration / 3)
-				color = (iteration << 16);
-			else if (iteration < max_iteration / 3 * 2)
-				color = (iteration << 8);
-			else if (iteration < max_iteration)
-				color = (iteration << 0);
-
-			img_pixel_put(data, j, i, color * 50);
-
-			j++;
+			iter = -1;
+			while (z.real * z.real + z.imag * z.imag <= 4.0
+				&& ++iter < max_iter)
+				z = calculate_next_iteration(z, c);
+			img_pixel_put(data, coord.x, coord.y, color(iter, max_iter, z));
+			coord.x++;
 		}
-		i++;
+		coord.y++;
 	}
 }
 
-void draw_julia(t_data *data, int max_iteration, double escape_radius)
+void draw_julia(t_data *data, int max_iter, double esc_radius)
 {
-	int			iteration;
-	int			color;
-	int			i;
-	int			j;
-	t_complex	z;		// Might be more efficient if it's in the data struct and
-	t_complex	z_temp;	// doesn't need to be created every call.
+	int			iter;
+	t_coord		coord;
+	t_complex	z;
 
-	i = 0;
-	while (i < WINDOW_HEIGHT)
+	coord.y = 0;
+	while (coord.y < WINDOW_HEIGHT)
 	{
-		j = 0;
-		while (j < WINDOW_WIDTH)
+		coord.x = 0;
+		while (coord.x < WINDOW_WIDTH)
 		{
-			// Map pixel coordinates to complex plane coordinates
-			//data->c_default.real = 0.355; //data->mouse_x;		// should fluctuate between [-2,2]
-			//data->c_default.imag = 0.355; //data->mouse_y;		// should fluctuate between [-2,2]
-			z.real = data->x_min + (data->x_max - data->x_min) * j / (WINDOW_WIDTH - 1.0);
-			z.imag = data->y_min + (data->y_max - data->y_min) * i / (WINDOW_HEIGHT - 1.0);
-
-			iteration = 0;
-			while (z.real * z.real + z.imag * z.imag < escape_radius * escape_radius && iteration < max_iteration)
-			{
-				z_temp.real = z.real * z.real - z.imag * z.imag + data->c_default.real;
-				z_temp.imag = 2.0 * z.real * z.imag + data->c_default.imag;
-				z = z_temp;
-				iteration++;
-			}
-
-			// Map the number of iterations to a color (adjust as needed)
-			if (iteration == max_iteration)
-				color = 0;
-			// else if (iteration < max_iteration / 3)
-			// 	color = (iteration << 16);
-			// else if (iteration < max_iteration / 3 * 2)
-			// 	color = (iteration << 8);
-			// else if (iteration < max_iteration)
-			// 	color = (iteration << 0);
-			else
-			{
-				double abs_z = z.real * z.real + z.imag * z.imag;
-				color = iteration + 1 - log(log(abs_z)) / log(2.0);
-			}
-
-			img_pixel_put(data, j, i, (color * 0x00110055) % 0x00CCCCCC);
-
-			j++;
+			map_complexplane_to_window(&z, data, coord);
+			iter = -1;
+			while (z.real * z.real + z.imag * z.imag < esc_radius * esc_radius
+				&& ++iter < max_iter)
+				z = calculate_next_iteration(z, data->c_default);
+			img_pixel_put(data, coord.x, coord.y, color(iter, max_iter, z));
+			coord.x++;
 		}
-		i++;
+		coord.y++;
 	}
 }
 
@@ -258,8 +231,6 @@ int	parse_arguments(int argc, char *argv[], t_data *data)
 	if (ft_strmatches_any(argv[1], 4, "m", "M", "mandelbrot", "Mandelbrot"))
 	{
 		data->set = MANDELBROT;
-		data->c_default.real = (data->x_max - data->x_min) / (WINDOW_WIDTH - 1.0);	// -1.0 really needed?
-		data->c_default.imag = (data->y_max - data->y_min) / (WINDOW_HEIGHT - 1.0);
 		if (argc > 2)
 			ft_printf("%s\n", "No need for additional arguments ;)");
 		return (1);
@@ -283,6 +254,8 @@ int main(int argc, char *argv[])
 {
 	t_mlx	mlx;
 
+	//TODO: For centering Julia I need to adjust still.
+	//TODO: Also check if mine is reversed...
 	/* Set default view */
 	mlx.data.zoom_factor = 1;
 	mlx.data.x_min = -2.0;
@@ -307,7 +280,7 @@ int main(int argc, char *argv[])
 	mlx.img = mlx_new_image(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!mlx.img)
 		clean_exit(&mlx, MLX_ERROR);
-	mlx.data.data = mlx_get_data_addr(mlx.img, &mlx.data.bits_per_pixel, &mlx.data.size_line, &mlx.data.endian);
+	mlx.data.addr = mlx_get_data_addr(mlx.img, &mlx.data.bits_per_pixel, &mlx.data.size_line, &mlx.data.endian);
 
 	/* Key Events */
 	mlx_hook(mlx.win, KeyPress, KeyPressMask, key_handling, &mlx);
