@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
+/*   Updated: 2023/12/02 12:54:11 by ldulling         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
@@ -14,37 +26,37 @@
 #include <stdio.h>
 #include "ft_printf.h"
 
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 800
+# define WIN_WIDTH 800
+# define WIN_HEIGHT 800
 # define ARG_ERROR 1
 # define MLX_ERROR 2
 # define MANDELBROT 1
 # define JULIA 2
 
-typedef struct	s_complex
+typedef struct s_complex
 {
 	double	real;
 	double	imag;
 }	t_complex;
 
-typedef struct	s_data
+typedef struct s_data
 {
-	char	*addr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-	int		color;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	zoom_factor;
-	int		redraw_needed;
-	int		set;
+	char		*addr;
+	int			bits_per_pixel;
+	int			size_line;
+	int			endian;
+	int			color;
+	double		x_min;
+	double		x_max;
+	double		y_min;
+	double		y_max;
+	double		zoom_factor;
+	int			redraw_needed;
+	int			set;
 	t_complex	c_default;
 }	t_data;
 
-typedef struct	s_mlx
+typedef struct s_mlx
 {
 	void	*xvar;
 	void	*win;
@@ -52,7 +64,7 @@ typedef struct	s_mlx
 	t_data	data;
 }	t_mlx;
 
-typedef struct	s_coord
+typedef struct s_coord
 {
 	int	x;
 	int	y;
@@ -62,10 +74,10 @@ typedef struct	s_coord
 t_complex	calculate_next_iteration(t_complex z, t_complex c);
 void		draw_julia(t_data *data, int max_iter, double esc_radius);
 void		draw_mandelbrot(t_data *data, int max_iter);
-void		map_complexplane_to_window(t_complex *cmpt, t_data *data, t_coord coord);
+void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord);
 
 /* Color */
-int	color(int iter, int max_iter, t_complex z);
+int			color(int iter, int max_iter, t_complex z);
 
 /* Exit */
 int			clean_exit(t_mlx *mlx, int error);

@@ -3,8 +3,8 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 720
 #define MLX_ERROR 1
 
 /* Not needed */
@@ -110,10 +110,10 @@ int	main(void)
 	mlx.xvar = mlx_init();
 	if (!mlx.xvar)
 		clean_exit(&mlx, MLX_ERROR);
-	mlx.win = mlx_new_window(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT, "Testing!");
+	mlx.win = mlx_new_window(mlx.xvar, WIN_WIDTH, WIN_HEIGHT, "Testing!");
 	if (!mlx.win)
 		clean_exit(&mlx, MLX_ERROR);
-	mlx.img = mlx_new_image(mlx.xvar, WINDOW_WIDTH, WINDOW_HEIGHT);
+	mlx.img = mlx_new_image(mlx.xvar, WIN_WIDTH, WIN_HEIGHT);
 	if (!mlx.img)
 		clean_exit(&mlx, MLX_ERROR);
 	mlx.data = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.size_line, &mlx.endian);
