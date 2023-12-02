@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 12:54:11 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:15:22 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord);
 /* Color */
 int			color(int iter, int max_iter, t_complex z);
 
-/* Exit */
-int			clean_exit(t_mlx *mlx, int error);
-
-/* Interface */
+/* Events */
 int			key_handling(int keysymbol, t_mlx *mlx);
 int			zoom(int button, int x, int y, t_data *data);
+
+/* Exit */
+int			clean_exit(t_mlx *mlx, int error);
 
 /* Init */
 void		init(t_mlx *mlx);

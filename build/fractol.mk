@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/02 12:24:28 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/02 14:14:08 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,10 @@ SUBDIR	:=	./
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			calculate.c \
 			color.c \
+			events.c \
 			exit.c \
 			fractol.c \
 			init.c \
-			interface.c \
 			parsing.c \
 			rendering.c \
 )
