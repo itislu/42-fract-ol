@@ -27,10 +27,29 @@ void	init(t_mlx *mlx)
 			&mlx->data.size_line, &mlx->data.endian);
 	//TODO: For centering Julia I need to adjust still.
 	//TODO: Also check if mine is reversed...
+	default_view(mlx);
+	mlx->data.redraw_needed = true;
+}
+
+void	default_view(t_mlx *mlx)
+{
+	double	aspect_ratio;
+
 	mlx->data.zoom_factor = 1;
-	mlx->data.x_min = -2.0;
-	mlx->data.x_max = 1.0;
-	mlx->data.y_min = -1.5;
-	mlx->data.y_max = 1.5;
-	mlx->data.redraw_needed = 1;
+	mlx->data.max_iter = MAX_ITERATIONS;
+	aspect_ratio = (double) WIN_WIDTH / WIN_HEIGHT;
+	if (aspect_ratio >= 1.0)
+	{
+		mlx->data.x_min = -INITIAL_VIEW * aspect_ratio;
+		mlx->data.x_max = INITIAL_VIEW * aspect_ratio;
+		mlx->data.y_min = -INITIAL_VIEW;
+		mlx->data.y_max = INITIAL_VIEW;
+	}
+	else
+	{
+		mlx->data.x_min = -INITIAL_VIEW;
+		mlx->data.x_max = INITIAL_VIEW;
+		mlx->data.y_min = -INITIAL_VIEW / aspect_ratio;
+		mlx->data.y_max = INITIAL_VIEW / aspect_ratio;
+	}
 }

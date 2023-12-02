@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 13:15:22 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:59:58 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <mlx.h>
+# include <stdbool.h>
 # include <stdlib.h>
 # include <X11/X.h>
 # include <X11/keysym.h>
@@ -26,8 +27,9 @@
 #include <stdio.h>
 #include "ft_printf.h"
 
-# define WIN_WIDTH 800
-# define WIN_HEIGHT 800
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 980
+# define INITIAL_VIEW 1.1
 # define ARG_ERROR 1
 # define MLX_ERROR 2
 # define MANDELBROT 1
@@ -51,7 +53,7 @@ typedef struct s_data
 	double		y_min;
 	double		y_max;
 	double		zoom_factor;
-	int			redraw_needed;
+	bool		redraw_needed;
 	int			set;
 	t_complex	c_default;
 }	t_data;
