@@ -36,14 +36,16 @@ int	render_julia(t_mlx *mlx)
 
 void	img_pixel_put(t_data *data, int x, int y, int color)
 {
-	char	*pixel;
+	int		bytes_per_pixel;
 	int		i;
 	int		next_byte;
+	char	*pixel;
 
-	pixel = data->addr + (y * data->size_line + x * (data->bits_per_pixel / 8));
+	bytes_per_pixel = data->bits_per_pixel / 8;
+	pixel = data->addr + (y * data->size_line + x * bytes_per_pixel);
 	if (data->endian)
 	{
-		i = data->bits_per_pixel;
+		i = data->bits_per_pixel - 8;
 		next_byte = -8;
 	}
 	else
@@ -51,7 +53,7 @@ void	img_pixel_put(t_data *data, int x, int y, int color)
 		i = 0;
 		next_byte = 8;
 	}
-	while (i != data->bits_per_pixel)
+	while (bytes_per_pixel--)
 	{
 		*pixel++ = (color >> i) & 0XFF;
 		i += next_byte;
