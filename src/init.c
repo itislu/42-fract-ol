@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:59:52 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 12:53:27 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:59:56 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	init(t_mlx *mlx)
 	//TODO: Also check if mine is reversed...
 	default_view(mlx);
 	mlx->data.redraw_needed = true;
+	mlx->data.toggle.zoom_optimization = true;
 }
 
 void	default_view(t_mlx *mlx)

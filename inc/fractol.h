@@ -30,10 +30,17 @@
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 980
 # define INITIAL_VIEW 1.1
+# define MAX_ITERATIONS 1000
+# define ZOOM_OPTIMIZATION 90
 # define ARG_ERROR 1
 # define MLX_ERROR 2
 # define MANDELBROT 1
 # define JULIA 2
+
+typedef struct s_toggle
+{
+	bool	zoom_optimization;
+}	t_toggle;
 
 typedef struct s_complex
 {
@@ -54,6 +61,8 @@ typedef struct s_data
 	double		y_max;
 	double		zoom_factor;
 	bool		redraw_needed;
+	int			max_iter;
+	t_toggle	toggle;
 	int			set;
 	t_complex	c_default;
 }	t_data;
@@ -89,6 +98,7 @@ int			zoom(int button, int x, int y, t_data *data);
 int			clean_exit(t_mlx *mlx, int error);
 
 /* Init */
+void		default_view(t_mlx *mlx);
 void		init(t_mlx *mlx);
 
 /* Parsing */
