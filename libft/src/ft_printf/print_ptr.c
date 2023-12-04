@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:27:12 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 20:17:19 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:23:14 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	print_ptr(size_t ptr, t_struct *f)
 	int	len_full;
 	int	printed;
 
-	printed = 0;
 	if (!ptr)
-		return (printed += print_nullptr(f));
+		return (print_nullptr(f));
+	printed = 0;
 	len_ptr = ptrlen(ptr);
 	len_full = fullptrlen(len_ptr, f);
 	if (!f->minus && f->width > len_full && !(f->zero && f->precision < 0))
