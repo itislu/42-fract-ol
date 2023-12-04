@@ -12,12 +12,12 @@
 
 #include "ft_printf.h"
 
-static int	print_nullptr(t_struct *f);
+static int	print_nullptr(t_format *f);
 static int	ptrlen(size_t ptr);
-static int	fullptrlen(int len_ptr, t_struct *f);
+static int	fullptrlen(int len_ptr, t_format *f);
 static int	puthex(size_t ptr);
 
-int	print_ptr(size_t ptr, t_struct *f)
+int	print_ptr(size_t ptr, t_format *f)
 {
 	int	len_ptr;
 	int	len_full;
@@ -45,7 +45,7 @@ int	print_ptr(size_t ptr, t_struct *f)
 	return (printed);
 }
 
-static int	print_nullptr(t_struct *f)
+static int	print_nullptr(t_format *f)
 {
 	int	len;
 	int	printed;
@@ -73,7 +73,7 @@ static int	ptrlen(size_t ptr)
 	return (len_ptr);
 }
 
-static int	fullptrlen(int len_ptr, t_struct *f)
+static int	fullptrlen(int len_ptr, t_format *f)
 {
 	int	len_full;
 

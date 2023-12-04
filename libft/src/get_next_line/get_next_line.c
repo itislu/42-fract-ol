@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:06:25 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/18 12:19:59 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:17:55 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_next_line(int fd)
 {
-	static t_list	*head[FD_MAX];
+	static t_buf	*head[FD_MAX];
 	char			*result;
 
 	if (!initial_check(fd, &head[fd]))
@@ -37,7 +37,7 @@ char	*get_next_line(int fd)
 	return (result);
 }
 
-int	check_for_full_leftover_line(t_list **head, char **result)
+int	check_for_full_leftover_line(t_buf **head, char **result)
 {
 	ssize_t	i;
 	ssize_t	new_line_end;
@@ -65,9 +65,9 @@ int	check_for_full_leftover_line(t_list **head, char **result)
 	return (0);
 }
 
-int	read_until_endofline(t_list **head, int fd)
+int	read_until_endofline(t_buf **head, int fd)
 {
-	t_list	*cur;
+	t_buf	*cur;
 
 	if ((*head)->next)
 		cur = (*head)->next;
@@ -90,9 +90,9 @@ int	read_until_endofline(t_list **head, int fd)
 	return (1);
 }
 
-char	*copy_into_result_and_move_head_to_tail(t_list **head)
+char	*copy_into_result_and_move_head_to_tail(t_buf **head)
 {
-	t_list	*cur;
+	t_buf	*cur;
 	char	*result;
 	size_t	i;
 	ssize_t	j;

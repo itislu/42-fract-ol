@@ -6,17 +6,17 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:12:14 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 20:26:19 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	print_flags(const char *format, int *i, t_struct *f);
-static int	print_width(const char *format, int *i, t_struct *f);
-static int	print_precision(const char *format, int *i, t_struct *f);
+static int	print_flags(const char *format, int *i, t_format *f);
+static int	print_width(const char *format, int *i, t_format *f);
+static int	print_precision(const char *format, int *i, t_format *f);
 
-int	print_parsed(const char *format, int parsed, t_struct *f)
+int	print_parsed(const char *format, int parsed, t_format *f)
 {
 	int	i;
 	int	printed;
@@ -34,7 +34,7 @@ int	print_parsed(const char *format, int parsed, t_struct *f)
 	return (printed);
 }
 
-static int	print_flags(const char *format, int *i, t_struct *f)
+static int	print_flags(const char *format, int *i, t_format *f)
 {
 	int	printed;
 
@@ -54,7 +54,7 @@ static int	print_flags(const char *format, int *i, t_struct *f)
 	return (printed);
 }
 
-static int	print_width(const char *format, int *i, t_struct *f)
+static int	print_width(const char *format, int *i, t_format *f)
 {
 	int	printed;
 
@@ -69,7 +69,7 @@ static int	print_width(const char *format, int *i, t_struct *f)
 	return (printed);
 }
 
-static int	print_precision(const char *format, int *i, t_struct *f)
+static int	print_precision(const char *format, int *i, t_format *f)
 {
 	int	printed;
 

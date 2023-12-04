@@ -6,15 +6,15 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:27:17 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 19:27:18 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	print(const char *str, int len, t_struct *f);
+static int	print(const char *str, int len, t_format *f);
 
-int	print_str(const char *str, t_struct *f)
+int	print_str(const char *str, t_format *f)
 {
 	int	len;
 	int	printed;
@@ -37,7 +37,7 @@ int	print_str(const char *str, t_struct *f)
 	return (printed);
 }
 
-static int	print(const char *str, int len, t_struct *f)
+static int	print(const char *str, int len, t_format *f)
 {
 	int	printed;
 

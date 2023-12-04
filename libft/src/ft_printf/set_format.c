@@ -6,18 +6,18 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:27:21 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 20:21:27 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	set_flags(const char *format, int *i, t_struct *f);
-static void	set_width(const char *format, int *i, t_struct *f, va_list *ap);
-static void	set_precision(const char *format, int *i, t_struct *f, va_list *ap);
-static void	set_specifier(const char *format, int *i, t_struct *f);
+static void	set_flags(const char *format, int *i, t_format *f);
+static void	set_width(const char *format, int *i, t_format *f, va_list *ap);
+static void	set_precision(const char *format, int *i, t_format *f, va_list *ap);
+static void	set_specifier(const char *format, int *i, t_format *f);
 
-int	set_format(const char *format, int *i, t_struct *f, va_list *ap)
+int	set_format(const char *format, int *i, t_format *f, va_list *ap)
 {
 	int	i_original;
 
@@ -39,7 +39,7 @@ int	set_format(const char *format, int *i, t_struct *f, va_list *ap)
 	return (*i - i_original);
 }
 
-static void	set_flags(const char *format, int *i, t_struct *f)
+static void	set_flags(const char *format, int *i, t_format *f)
 {
 	while (1)
 	{
@@ -59,7 +59,7 @@ static void	set_flags(const char *format, int *i, t_struct *f)
 	}
 }
 
-static void	set_width(const char *format, int *i, t_struct *f, va_list *ap)
+static void	set_width(const char *format, int *i, t_format *f, va_list *ap)
 {
 	int	nbr;
 
@@ -87,7 +87,7 @@ static void	set_width(const char *format, int *i, t_struct *f, va_list *ap)
 	return ;
 }
 
-static void	set_precision(const char *format, int *i, t_struct *f, va_list *ap)
+static void	set_precision(const char *format, int *i, t_format *f, va_list *ap)
 {
 	int	nbr;
 
@@ -115,7 +115,7 @@ static void	set_precision(const char *format, int *i, t_struct *f, va_list *ap)
 	return ;
 }
 
-static void	set_specifier(const char *format, int *i, t_struct *f)
+static void	set_specifier(const char *format, int *i, t_format *f)
 {
 	char	*specifier;
 

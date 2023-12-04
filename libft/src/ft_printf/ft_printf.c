@@ -6,22 +6,22 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:03 by ldulling          #+#    #+#             */
-/*   Updated: 2023/10/22 20:29:29 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	reset_format(t_struct *f);
-static int	parseandprint(const char *format, int *i, t_struct *f, va_list *ap);
-static int	print_argument(t_struct *f, va_list *ap);
+static void	reset_format(t_format *f);
+static int	parseandprint(const char *format, int *i, t_format *f, va_list *ap);
+static int	print_argument(t_format *f, va_list *ap);
 
 int	ft_printf(const char *format, ...)
 {
 	int			i;
 	int			printed;
 	int			temp;
-	t_struct	f;
+	t_format	f;
 	va_list		ap;
 
 	if (format == NULL)
@@ -45,7 +45,7 @@ int	ft_printf(const char *format, ...)
 	return (printed);
 }
 
-static void	reset_format(t_struct *f)
+static void	reset_format(t_format *f)
 {
 	f->hash = 0;
 	f->plus = 0;
@@ -58,7 +58,7 @@ static void	reset_format(t_struct *f)
 	return ;
 }
 
-static int	parseandprint(const char *format, int *i, t_struct *f, va_list *ap)
+static int	parseandprint(const char *format, int *i, t_format *f, va_list *ap)
 {
 	int	printed;
 	int	parsed;
@@ -78,7 +78,7 @@ static int	parseandprint(const char *format, int *i, t_struct *f, va_list *ap)
 	return (printed);
 }
 
-static int	print_argument(t_struct *f, va_list *ap)
+static int	print_argument(t_format *f, va_list *ap)
 {
 	int	printed;
 

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:08 by ldulling          #+#    #+#             */
-/*   Updated: 2023/11/18 16:36:23 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/02 20:16:30 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define NO_PRECISION_SET -1
 # define NEGATIVE_PRECISION -2
 
-typedef struct s_struct
+typedef struct s_format
 {
 	int		hash;
 	int		plus;
@@ -39,14 +39,14 @@ typedef struct s_struct
 	int		precision;
 	char	specifier;
 	int		unresolved;
-}	t_struct;
+}	t_format;
 
 int		ft_printf(const char *format, ...);
-int		print_char(unsigned char c, t_struct *f);
-int		print_nbr(long nbr, t_struct *f);
-int		print_parsed(const char *format, int parsed, t_struct *f);
-int		print_ptr(size_t ptr, t_struct *f);
-int		print_str(const char *str, t_struct *f);
-int		set_format(const char *format, int *i, t_struct *f, va_list *ap);
+int		print_char(unsigned char c, t_format *f);
+int		print_nbr(long nbr, t_format *f);
+int		print_parsed(const char *format, int parsed, t_format *f);
+int		print_ptr(size_t ptr, t_format *f);
+int		print_str(const char *str, t_format *f);
+int		set_format(const char *format, int *i, t_format *f, va_list *ap);
 
 #endif
