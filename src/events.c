@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:38:43 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/03 15:57:06 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:12:02 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,28 @@ int	key_handling(int keysymbol, t_mlx *mlx)
 	return (0);
 }
 
-int	zoom(int button, int x, int y, t_data *data)
+int	mouse_handling(int button, int x, int y, t_data *data)
 {
-	double	mouse_x_percent;
-	double	mouse_y_percent;
-	double	x_range;
-	double	y_range;
-
 	if (button == Button4)
 		data->zoom_factor = 0.95;
 	else if (button == Button5)
 		data->zoom_factor = 1.05;
 	else
 		return (0);
-	mouse_x_percent = (double)x / WIN_WIDTH;
-	mouse_y_percent = (double)y / WIN_HEIGHT;
+	if (data->fractal != BARNSLEYFERN)
+		zoom_viewport(x, y, data);
+	return (0);
+}
+
+void	zoom_viewport(int x, int y, t_data *data)
+{
+	double	mouse_x_percent;
+	double	mouse_y_percent;
+	double	x_range;
+	double	y_range;
+
+	mouse_x_percent = (double) x / WIN_WIDTH;
+	mouse_y_percent = (double) y / WIN_HEIGHT;
 	x_range = data->x_max - data->x_min;
 	y_range = data->y_max - data->y_min;
 	data->x_min = data->x_min
@@ -66,7 +73,6 @@ int	zoom(int button, int x, int y, t_data *data)
 	if (data->toggle.is_zoom_optimization)
 		data->toggle.zoom_optimization_factor = 1.0 - (double) ZOOM_OPTIMIZATION / 100;
 	data->redraw_needed = true;
-	return (0);
 }
 
 /* Keypad 1-9 should switch between zoom_opt configs, 0 reset to default, + and - go through them */

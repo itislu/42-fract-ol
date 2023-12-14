@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/14 12:39:42 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/14 15:32:42 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ DIR		:=	./
 #  Main:
 SUBDIR	:=	./
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			barnsley_fern.c \
 			calculate.c \
 			color.c \
 			events.c \

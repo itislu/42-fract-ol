@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 12:46:12 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:00:40 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,16 @@
 # define ZOOM_OPTIMIZATION_ON_OFF_DEFAULT	false
 # define ZOOM_OPTIMIZATION					90
 
-# define MANDELBROT	1
-# define JULIA		2
-# define MULTIBROT	3
-# define MULTIJULIA	4
-# define ARG_ERROR	1
-# define MLX_ERROR	2
+/* Possible fractals */
+# define MANDELBROT		1
+# define JULIA			2
+# define MULTIBROT		3
+# define MULTIJULIA		4
+# define BARNSLEYFERN	5
+
+/* Errors */
+# define ARG_ERROR		1
+# define MLX_ERROR		2
 
 typedef struct s_toggle
 {
@@ -52,6 +56,12 @@ typedef struct s_complex
 	double	real;
 	double	imag;
 }	t_complex;
+
+typedef struct s_coord
+{
+	int	x;
+	int	y;
+}	t_coord;
 
 typedef struct s_data
 {
@@ -68,7 +78,7 @@ typedef struct s_data
 	bool		redraw_needed;
 	int			max_iter;
 	t_toggle	toggle;
-	int			set;
+	int			fractal;
 	t_complex	c_default;
 }	t_data;
 
@@ -80,19 +90,19 @@ typedef struct s_mlx
 	t_data	data;
 }	t_mlx;
 
-typedef struct s_coord
-{
-	int	x;
-	int	y;
-}	t_coord;
-
 /* Calculate */
 t_complex	calculate_next_iteration(t_complex z, t_complex c);
 void		draw_julia(t_data *data, int max_iter, double esc_radius);
 void		draw_multijulia(t_data *data, int max_iter, double esc_radius);
 void		draw_mandelbrot(t_data *data, int max_iter);
 void		draw_multibrot(t_data *data, int max_iter);
-void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord);
+void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord img);
+
+/* Barnsley Fern */
+void		draw_barnsleyfern(t_data *data, int max_iter);
+double		get_random_double(int urandom);
+void	choose_random_point(double r, double *xn, double *yn);
+void		scale_barnsley_point(t_coord *img, double xn, double yn);
 
 /* Color */
 int			color(int iter, int max_iter, t_complex z);
@@ -100,7 +110,8 @@ int			save_rgb_in_int(double smooth_color);
 
 /* Events */
 int			key_handling(int keysymbol, t_mlx *mlx);
-int			zoom(int button, int x, int y, t_data *data);
+int			mouse_handling(int button, int x, int y, t_data *data);
+void		zoom_viewport(int x, int y, t_data *data);
 void		optimization_configs(int keysymbol, t_mlx *mlx);
 
 /* Exit */
@@ -116,6 +127,7 @@ bool		setup_mandelbrot(int argc, char *argv[], t_data *data);
 bool		setup_julia(int argc, char *argv[], t_data *data);
 bool		setup_multibrot(int argc, char *argv[], t_data *data);
 bool		setup_multijulia(int argc, char *argv[], t_data *data);
+bool		setup_barnsleyfern(int argc, char *argv[], t_data *data);
 
 /* Parsing uils */
 bool		parse_julia_values(int argc, char *argv[], t_complex *c_default);
@@ -127,5 +139,6 @@ int			render_mandelbrot(t_mlx *mlx);
 int			render_julia(t_mlx *mlx);
 int			render_multibrot(t_mlx *mlx);
 int			render_multijulia(t_mlx *mlx);
+int			render_barnsleyfern(t_mlx *mlx);
 
 #endif

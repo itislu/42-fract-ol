@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:33:29 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 12:55:05 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:16:44 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ bool	parse_arguments(int argc, char *argv[], t_data *data)
 	else if (ft_strmatches_any(argv[1], 4,
 			"jj", "JJ", "multijulia", "Multijulia"))
 		success = setup_multijulia(argc, argv, data);
+	else if (ft_strmatches_any(argv[1], 9,
+			"b", "B", "bf", "BF", "barnsley", "Barnsley",
+			"barnsley fern", "Barnsley fern", "Barnsley Fern"))
+		success = setup_barnsleyfern(argc, argv, data);
 	else
 		success = false;
 	return (success);
@@ -38,7 +42,7 @@ bool	parse_arguments(int argc, char *argv[], t_data *data)
 bool	setup_mandelbrot(int argc, char *argv[], t_data *data)
 {
 	(void) argv;
-	data->set = MANDELBROT;
+	data->fractal = MANDELBROT;
 	if (argc > 2)
 		ft_printf("%s\n", "No need for additional arguments ;)");
 	return (true);
@@ -48,7 +52,7 @@ bool	setup_julia(int argc, char *argv[], t_data *data)
 {
 	bool	success;
 
-	data->set = JULIA;
+	data->fractal = JULIA;
 	success = parse_julia_values(argc, argv, &data->c_default);
 	return (success);
 }
@@ -56,7 +60,7 @@ bool	setup_julia(int argc, char *argv[], t_data *data)
 bool	setup_multibrot(int argc, char *argv[], t_data *data)
 {
 	(void) argv;
-	data->set = MULTIBROT;
+	data->fractal = MULTIBROT;
 	if (argc > 2)
 		ft_printf("%s\n", "No need for additional arguments ;)");
 	return (true);
@@ -66,7 +70,16 @@ bool	setup_multijulia(int argc, char *argv[], t_data *data)
 {
 	bool	success;
 
-	data->set = MULTIJULIA;
+	data->fractal = MULTIJULIA;
 	success = parse_julia_values(argc, argv, &data->c_default);
 	return (success);
+}
+
+bool	setup_barnsleyfern(int argc, char *argv[], t_data *data)
+{
+	(void) argv;
+	data->fractal = BARNSLEYFERN;
+	if (argc > 2)
+		ft_printf("%s\n", "No need for additional arguments ;)");
+	return (true);
 }

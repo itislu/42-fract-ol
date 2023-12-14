@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:46:50 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 11:56:48 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:13:14 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,17 @@ int	render_multijulia(t_mlx *mlx)
 			mlx->data.toggle.zoom_optimization_factor = 1.0;
 		else
 			mlx->data.redraw_needed = false;
+	}
+	return (0);
+}
+
+int	render_barnsleyfern(t_mlx *mlx)
+{
+	if (mlx->data.redraw_needed)
+	{
+		draw_barnsleyfern(&mlx->data, mlx->data.max_iter);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		mlx->data.redraw_needed = false;
 	}
 	return (0);
 }
