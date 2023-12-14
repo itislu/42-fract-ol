@@ -6,107 +6,109 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/11/14 09:42:56 by ldulling         ###   ########.fr        #
+#    Updated: 2023/11/18 13:27:26 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	libft.a
-I			=	./
-D			=	_build/dep/
-O			=	_build/obj/
+# ***************************** CONFIGURATION ******************************** #
 
-SRC			=	ft_atoi.c \
-				ft_bzero.c \
-				ft_calloc.c \
-				ft_isalnum.c \
-				ft_isalpha.c \
-				ft_isascii.c \
-				ft_isdigit.c \
-				ft_isprint.c \
-				ft_memchr.c \
-				ft_memcmp.c \
-				ft_memcpy.c \
-				ft_memmove.c \
-				ft_memset.c \
-				ft_strchr.c \
-				ft_strdup.c \
-				ft_strlcat.c \
-				ft_strlcpy.c \
-				ft_strlen.c \
-				ft_strncmp.c \
-				ft_strnstr.c \
-				ft_strrchr.c \
-				ft_tolower.c \
-				ft_toupper.c \
-				\
-				ft_itoa.c \
-				ft_putchar_fd.c \
-				ft_putendl_fd.c \
-				ft_putnbr_fd.c \
-				ft_putstr_fd.c \
-				ft_split.c \
-				ft_striteri.c \
-				ft_strjoin.c \
-				ft_strmapi.c \
-				ft_strtrim.c \
-				ft_substr.c \
-				\
-				ft_lstadd_back.c \
-				ft_lstadd_front.c \
-				ft_lstclear.c \
-				ft_lstdelone.c \
-				ft_lstiter.c \
-				ft_lstlast.c \
-				ft_lstmap.c \
-				ft_lstnew.c \
-				ft_lstsize.c \
-				\
-				ft_atof.c \
-				ft_isspace.c \
-				ft_strcmp.c \
-				ft_strmatches_any.c
+NAME		:=		libft.a
 
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror $(foreach X,$I,-I$(X))
-DEBUGFLAGS	=	-g
-ARFLAGS		=	rcs
+# Header files directory:
+I			:=		inc/
 
-DEP			=	$(SRC:%.c=$D%.d)
-OBJ			=	$(SRC:%.c=$O%.o)
+# Build directories:
+B			:=		build/
+D			:=		$B_dep/
+O			:=		$B_obj/
 
-.PHONY:			all cleandep cleanobj clean fclean re debug
+# Source files directory:
+S			:=		src/
 
-all:			$(NAME)
+# Makefiles in build/ directory with source file listings to be included
+# (files that are dependent on others need to be below their dependency):
+SOURCELISTS	:=		libft.mk \
+					ft_printf.mk \
+					get_next_line.mk \
 
-$(NAME):		$(OBJ)
-				ar $(ARFLAGS) $(NAME) $^
+# Flags:
+CC			:=		cc
+CFLAGS		:=		-Wall -Wextra -Werror $(addprefix -I,$I)
+DEBUGFLAGS	:=		-g
+ARFLAGS		:=		rcs
 
-$(OBJ): $O%.o:	%.c | $O
-				$(CC) $(CFLAGS) -c $< -o $@
+# ***************************** BUILD PROCESS ******************************** #
 
-$(DEP): $D%.d:	%.c | $D
-				@$(CC) $(CFLAGS) -MM -MP -MF $@ -MT "$O$*.o $@" $<
+.DEFAULT_GOAL	:=	all
 
-$O $D:
-				@mkdir -p $@
+include				$(addprefix $B,$(SOURCELISTS))
 
-cleandep:
-				rm -rf $D
+SRC				:=	$(foreach name,$(basename $(SOURCELISTS)),$(SRC_$(name)))
 
-cleanobj:
-				rm -rf $O
+DEP				:=	$(SRC:%.c=$D%.d)
+OBJ				:=	$(SRC:%.c=$O%.o)
+SUBDIRS_D		:=	$(sort $(dir $(DEP)))
+SUBDIRS_O		:=	$(sort $(dir $(OBJ)))
 
-clean:			cleandep cleanobj
-				rm -rf _build/
+.PHONY			:	all cleandep cleanobj clean fclean re debug norm print-%
 
-fclean:			clean
-				rm -f $(NAME)
+all				:	$(NAME)
 
-re:				fclean all
+$(NAME)			:	$(OBJ)
+					ar $(ARFLAGS) $(NAME) $(OBJ)
 
-debug:			CFLAGS += $(DEBUGFLAGS)
-debug:			re
+$(OBJ):	$O%.o	:	$S%.c | $(SUBDIRS_O)
+					$(CC) $(CFLAGS) -c $< -o $@
 
-ifeq ($(filter $(MAKECMDGOALS),cleandep cleanobj clean fclean),)
--include 		$(DEP)
+$(DEP):	$D%.d	:	$S%.c | $(SUBDIRS_D)
+	@				$(CC) $(CFLAGS) -M -MP -MF $@ -MT "$O$*.o $@" $<
+
+$(SUBDIRS_O) $(SUBDIRS_D):
+	@				mkdir -p $@
+
+cleandep		:
+ifneq (,$(wildcard $(DEP)))
+					rm -f $(DEP)
 endif
+ifneq (,$(wildcard $D))
+					-find $(D) -type d -empty -delete
+endif
+
+cleanobj		:
+ifneq (,$(wildcard $(OBJ)))
+					rm -f $(OBJ)
+endif
+ifneq (,$(wildcard $O))
+					-find $(O) -type d -empty -delete
+endif
+
+clean			:	cleandep cleanobj
+
+fclean			:	clean
+ifneq (,$(wildcard $(NAME)))
+					rm -f $(NAME)
+endif
+
+re				:	fclean all
+
+debug			:	CFLAGS += $(DEBUGFLAGS)
+debug			:	re
+
+#TODO: prolly need to change the message now
+norm			:
+	@				read -p "Press Enter to check $$(basename "$$(pwd)")..." \
+					userInput;
+	@				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
+					$(addprefix $S,$(SRC)) $(foreach dir,$I,$(dir)*.h)
+
+ifeq (,$(filter cleandep cleanobj clean fclean re debug norm,$(MAKECMDGOALS)))
+    ifneq (,$(wildcard $O))
+        -include	$(DEP)
+    endif
+endif
+
+# *************************** MAKEFILE DEBUGGING ***************************** #
+
+# Prints the values of the variable given after the minus.
+print-%			:
+	@				echo $* = $($*)
