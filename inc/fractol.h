@@ -14,6 +14,7 @@
 # define FRACTOL_H
 
 # include "libft.h"
+# include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
 # include <stdlib.h>
@@ -89,6 +90,7 @@ void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord);
 
 /* Color */
 int			color(int iter, int max_iter, t_complex z);
+int			save_rgb_in_int(double smooth_color);
 
 /* Events */
 int			key_handling(int keysymbol, t_mlx *mlx);
