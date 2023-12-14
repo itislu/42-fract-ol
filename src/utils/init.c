@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:59:52 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 19:38:33 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:54:27 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	init(t_mlx *mlx)
 		clean_exit(mlx, MLX_ERROR);
 	mlx->data.addr = mlx_get_data_addr(mlx->img, &mlx->data.bits_per_pixel,
 			&mlx->data.size_line, &mlx->data.endian);
-	//TODO: Also check if mine is reversed...
 	default_view(mlx);
 	mlx->data.redraw_needed = true;
 	mlx->data.toggle.is_zoom_optimize = ZOOM_OPTIMIZE_ON_OFF_DEFAULT;

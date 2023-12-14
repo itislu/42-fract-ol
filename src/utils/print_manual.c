@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:35:24 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 19:44:22 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:53:25 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	print_manual(void)
 		"  Numpad 0              Reset level of detail to 100%%.\n"
 		"  Numpad +/-            Increase/decrease level of detail by 50%%.\n"
 		"\n"
-	);
+		);
 }

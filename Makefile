@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/25 12:48:32 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/02 12:22:05 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/14 19:51:57 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ NAME			:=	fractol
 # Header files directories:
 I				:=	inc/ libft/inc/
 
-#TODO: find names and see if I will create a lib/ directory
 #
 L				:=	libft/
 l				:=	ft mlx Xext X11 m
@@ -145,7 +144,6 @@ debuglib		:
 dir				:
 					mkdir $B $I $L $S
 
-#TODO: align with the other Makefiles
 norm			:
 	@				-norminette -R CheckForbiddenSourceHeader -R CheckDefine \
 					$(addprefix $S,$(SRC)) $(foreach dir,$I,$(dir)*.h)
