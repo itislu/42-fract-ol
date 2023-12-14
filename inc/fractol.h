@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 18:20:12 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:38:52 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FRACTOL_H
 
 # include "libft.h"
+# include "ft_printf.h"
+# include <fcntl.h>
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
@@ -21,19 +23,14 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 
-/* temporary */
-#include <stdio.h>
-#include "ft_printf.h"
-#include <fcntl.h>
-
 /* Customization */
 # define WIN_WIDTH							1920
 # define WIN_HEIGHT							980
 # define INITIAL_VIEW						1.2
 # define MAX_ITERATIONS						100
 # define MINIMUM_MAX_ITERATIONS				30
-# define zoom_optimize_ON_OFF_DEFAULT	false
-# define zoom_optimize					90
+# define ZOOM_OPTIMIZE_ON_OFF_DEFAULT		false
+# define ZOOM_OPTIMIZE						90
 
 /* Possible fractals */
 # define MANDELBROT		1
@@ -96,39 +93,33 @@ int			color(int iter, int max_iter, t_complex z);
 int			save_rgb_in_int(double smooth_color);
 
 /* Events */
-	/* Key handling */
+	// Key handling
 int			key_handling(int keysymbol, t_mlx *mlx);
 void		optimization_configs(int keysymbol, t_mlx *mlx);
-
-	/* Mouse handling */
+	// Mouse handling
 int			mouse_handling(int button, int x, int y, t_data *data);
 void		zoom_viewport(int x, int y, t_data *data);
 
 /* Fractals */
-	/* Barnsley Fern */
+	// Barnsley Fern
 int			render_barnsleyfern(t_mlx *mlx);
 void		calc_barnsleyfern(t_data *data, int max_iter);
 double		get_random_double(int urandom);
 void		choose_random_point(double r, double *xn, double *yn);
 void		map_barnsley_point_to_win(t_coord *img, double xn, double yn);
-
-	/* Mandelbrot */
+	// Mandelbrot
 int			render_mandelbrot(t_mlx *mlx);
 void		calc_mandelbrot(t_data *data, int max_iter);
-
-	/* Multibrot */
+	// Multibrot
 int			render_multibrot(t_mlx *mlx);
 void		calc_multibrot(t_data *data, int max_iter);
-
-	/* Julia */
+	// Julia
 int			render_julia(t_mlx *mlx);
 void		calc_julia(t_data *data, int max_iter, double esc_radius);
-
-	/* Multijulia */
+	// Multijulia
 int			render_multijulia(t_mlx *mlx);
 void		calc_multijulia(t_data *data, int max_iter, double esc_radius);
-
-	/* Calculation utils */
+	// Calculation utils
 t_complex	calc_next_iteration(t_complex z, t_complex c);
 t_complex	calc_next_iteration_multi(t_complex z, t_complex c, double n);
 void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord img);
@@ -136,20 +127,17 @@ void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord img);
 /* Parsing */
 bool		parse_arguments(int argc, char *argv[], t_data *data);
 bool		parse_julia_values(int argc, char *argv[], t_complex *c_default);
-
-	/* Parsing utils */
+	// Parsing utils
 bool		setup_config(int argc, char *argv[], t_data *data, int fractal);
 bool		setup_fixed(int argc, t_data *data, int fractal);
 bool		valid_float_arg(char *arg);
 
-/* Rendering */
-
 /* Utils */
 void		img_pixel_put(t_data *data, int x, int y, int color);
-	/* Exit */
+void		print_manual(void);
+	// Exit
 int			clean_exit(t_mlx *mlx, int error);
-
-	/* Init */
+	// Init
 void		default_view(t_mlx *mlx);
 void		init(t_mlx *mlx);
 

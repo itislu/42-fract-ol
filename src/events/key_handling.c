@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:38:43 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 18:27:13 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:39:40 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	key_handling(int keysymbol, t_mlx *mlx)
 		prev_is_zoom_optimize = mlx->data.toggle.is_zoom_optimize;
 	if (keysymbol == XK_Escape)
 		clean_exit(mlx, 0);
-	else if (keysymbol == XK_o)
+	else if (keysymbol == XK_KP_Enter)
 	{
 		mlx->data.toggle.is_zoom_optimize ^= 1;
 		if (mlx->data.max_iter == MAX_ITERATIONS)
@@ -39,7 +39,6 @@ int	key_handling(int keysymbol, t_mlx *mlx)
 	return (0);
 }
 
-/* Keypad 1-9 should switch between zoom_opt configs, 0 reset to default, + and - go through them */
 void	optimization_configs(int keysymbol, t_mlx *mlx)
 {
 	if (keysymbol == XK_KP_Add)

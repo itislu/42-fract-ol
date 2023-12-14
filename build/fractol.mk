@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/14 18:22:32 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/14 18:39:34 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			exit.c \
 			img_pixel_put.c \
 			init.c \
+			print_manual.c \
 )
 
 

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:38:43 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 18:26:58 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:38:52 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	zoom_viewport(int x, int y, t_data *data)
 		+ y_range * data->zoom_factor;
 	if (data->toggle.is_zoom_optimize)
 		data->toggle.zoom_optimize_factor
-			= 1.0 - (double) zoom_optimize / 100;
+			= 1.0 - (double) ZOOM_OPTIMIZE / 100;
 	data->redraw_needed = true;
 }

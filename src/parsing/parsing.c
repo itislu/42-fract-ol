@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:33:29 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 17:39:22 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:14:18 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,21 @@ bool	parse_arguments(int argc, char *argv[], t_data *data)
 {
 	bool	success;
 
+	success = false;
 	if (argc < 2)
-		success = false;
-	else if (ft_strmatches_any(argv[1], 4,
-			"m", "M", "mandelbrot", "Mandelbrot"))
+		return (success);
+	else if (ft_strmatches_any(argv[1], 2, "-m", "--mandelbrot"))
 		success = setup_fixed(argc, data, MANDELBROT);
-	else if (ft_strmatches_any(argv[1], 4,
-			"j", "J", "julia", "Julia"))
+	else if (ft_strmatches_any(argv[1], 2, "-j", "--julia"))
 		success = setup_config(argc, argv, data, JULIA);
-	else if (ft_strmatches_any(argv[1], 4,
-			"mm", "MM", "multibrot", "Multibrot"))
+	else if (ft_strmatches_any(argv[1], 2, "-mm", "--multibrot"))
 		success = setup_fixed(argc, data, MULTIBROT);
-	else if (ft_strmatches_any(argv[1], 4,
-			"jj", "JJ", "multijulia", "Multijulia"))
+	else if (ft_strmatches_any(argv[1], 2, "-jj", "--multijulia"))
 		success = setup_config(argc, argv, data, MULTIJULIA);
-	else if (ft_strmatches_any(argv[1], 9,
-			"b", "B", "bf", "BF", "barnsley", "Barnsley",
-			"barnsley fern", "Barnsley fern", "Barnsley Fern"))
+	else if (ft_strmatches_any(argv[1], 2, "-b", "--barnsley"))
 		success = setup_fixed(argc, data, BARNSLEYFERN);
-	else
-		success = false;
+	else if (ft_strmatches_any(argv[1], 2, "-h", "--help"))
+		print_manual();
 	return (success);
 }
 
