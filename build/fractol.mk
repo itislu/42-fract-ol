@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/14 15:32:42 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/14 18:22:32 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,16 +32,46 @@ DIR		:=	./
 #  Main:
 SUBDIR	:=	./
 TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
-			barnsley_fern.c \
-			calculate.c \
-			color.c \
-			events.c \
-			exit.c \
 			fractol.c \
-			init.c \
+)
+
+#  Color:
+SUBDIR	:=	color/
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			color.c \
+)
+
+#  Events:
+SUBDIR	:=	events/
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			key_handling.c \
+			mouse_handling.c \
+)
+
+#  Fractals:
+SUBDIR	:=	fractals/
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			barnsley_fern.c \
+			calculation_utils.c \
+			julia.c \
+			mandelbrot.c \
+			multibrot.c \
+			multijulia.c \
+)
+
+#  Parsing:
+SUBDIR	:=	parsing/
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			parsing.c \
 			parsing_utils.c \
-			rendering.c \
+)
+
+#  Utils:
+SUBDIR	:=	utils/
+TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
+			exit.c \
+			img_pixel_put.c \
+			init.c \
 )
 
 

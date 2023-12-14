@@ -6,13 +6,24 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:29:59 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 16:06:52 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:04:07 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void draw_barnsleyfern(t_data *data, int max_iter)
+int	render_barnsleyfern(t_mlx *mlx)
+{
+	if (mlx->data.redraw_needed)
+	{
+		calc_barnsleyfern(&mlx->data, mlx->data.max_iter);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		mlx->data.redraw_needed = false;
+	}
+	return (0);
+}
+
+void	calc_barnsleyfern(t_data *data, int max_iter)
 {
 	t_coord	img;
 	int		n;
@@ -30,7 +41,7 @@ void draw_barnsleyfern(t_data *data, int max_iter)
 	while (n < max_iter)
 	{
 		choose_random_point(get_random_double(urandom), &xn, &yn);
-		scale_barnsley_point(&img, xn, yn);
+		map_barnsley_point_to_win(&img, xn, yn);
 		if (img.x >= 0 && img.x < WIN_WIDTH && img.y >= 0 && img.y < WIN_HEIGHT)
 			img_pixel_put(data, img.x, img.y, 0x00FF00);
 		n++;
@@ -76,7 +87,7 @@ void	choose_random_point(double r, double *xn, double *yn)
 	}
 }
 
-void	scale_barnsley_point(t_coord *img, double xn, double yn)
+void	map_barnsley_point_to_win(t_coord *img, double xn, double yn)
 {
 	img->x = (int)((xn + 2.1820) / 4.8378 * WIN_WIDTH);
 	img->y = (int)((9.9983 - yn) / 9.9983 * WIN_HEIGHT);

@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/14 16:00:40 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:20:12 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@
 # define WIN_HEIGHT							980
 # define INITIAL_VIEW						1.2
 # define MAX_ITERATIONS						100
-# define ZOOM_OPTIMIZATION_ON_OFF_DEFAULT	false
-# define ZOOM_OPTIMIZATION					90
+# define MINIMUM_MAX_ITERATIONS				30
+# define zoom_optimize_ON_OFF_DEFAULT	false
+# define zoom_optimize					90
 
 /* Possible fractals */
 # define MANDELBROT		1
@@ -47,8 +48,8 @@
 
 typedef struct s_toggle
 {
-	bool	is_zoom_optimization;
-	double	zoom_optimization_factor;
+	bool	is_zoom_optimize;
+	double	zoom_optimize_factor;
 }	t_toggle;
 
 typedef struct s_complex
@@ -90,55 +91,66 @@ typedef struct s_mlx
 	t_data	data;
 }	t_mlx;
 
-/* Calculate */
-t_complex	calculate_next_iteration(t_complex z, t_complex c);
-void		draw_julia(t_data *data, int max_iter, double esc_radius);
-void		draw_multijulia(t_data *data, int max_iter, double esc_radius);
-void		draw_mandelbrot(t_data *data, int max_iter);
-void		draw_multibrot(t_data *data, int max_iter);
-void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord img);
-
-/* Barnsley Fern */
-void		draw_barnsleyfern(t_data *data, int max_iter);
-double		get_random_double(int urandom);
-void	choose_random_point(double r, double *xn, double *yn);
-void		scale_barnsley_point(t_coord *img, double xn, double yn);
-
 /* Color */
 int			color(int iter, int max_iter, t_complex z);
 int			save_rgb_in_int(double smooth_color);
 
 /* Events */
+	/* Key handling */
 int			key_handling(int keysymbol, t_mlx *mlx);
-int			mouse_handling(int button, int x, int y, t_data *data);
-void		zoom_viewport(int x, int y, t_data *data);
 void		optimization_configs(int keysymbol, t_mlx *mlx);
 
-/* Exit */
-int			clean_exit(t_mlx *mlx, int error);
+	/* Mouse handling */
+int			mouse_handling(int button, int x, int y, t_data *data);
+void		zoom_viewport(int x, int y, t_data *data);
 
-/* Init */
-void		default_view(t_mlx *mlx);
-void		init(t_mlx *mlx);
+/* Fractals */
+	/* Barnsley Fern */
+int			render_barnsleyfern(t_mlx *mlx);
+void		calc_barnsleyfern(t_data *data, int max_iter);
+double		get_random_double(int urandom);
+void		choose_random_point(double r, double *xn, double *yn);
+void		map_barnsley_point_to_win(t_coord *img, double xn, double yn);
+
+	/* Mandelbrot */
+int			render_mandelbrot(t_mlx *mlx);
+void		calc_mandelbrot(t_data *data, int max_iter);
+
+	/* Multibrot */
+int			render_multibrot(t_mlx *mlx);
+void		calc_multibrot(t_data *data, int max_iter);
+
+	/* Julia */
+int			render_julia(t_mlx *mlx);
+void		calc_julia(t_data *data, int max_iter, double esc_radius);
+
+	/* Multijulia */
+int			render_multijulia(t_mlx *mlx);
+void		calc_multijulia(t_data *data, int max_iter, double esc_radius);
+
+	/* Calculation utils */
+t_complex	calc_next_iteration(t_complex z, t_complex c);
+t_complex	calc_next_iteration_multi(t_complex z, t_complex c, double n);
+void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord img);
 
 /* Parsing */
 bool		parse_arguments(int argc, char *argv[], t_data *data);
-bool		setup_mandelbrot(int argc, char *argv[], t_data *data);
-bool		setup_julia(int argc, char *argv[], t_data *data);
-bool		setup_multibrot(int argc, char *argv[], t_data *data);
-bool		setup_multijulia(int argc, char *argv[], t_data *data);
-bool		setup_barnsleyfern(int argc, char *argv[], t_data *data);
-
-/* Parsing uils */
 bool		parse_julia_values(int argc, char *argv[], t_complex *c_default);
+
+	/* Parsing utils */
+bool		setup_config(int argc, char *argv[], t_data *data, int fractal);
+bool		setup_fixed(int argc, t_data *data, int fractal);
 bool		valid_float_arg(char *arg);
 
 /* Rendering */
+
+/* Utils */
 void		img_pixel_put(t_data *data, int x, int y, int color);
-int			render_mandelbrot(t_mlx *mlx);
-int			render_julia(t_mlx *mlx);
-int			render_multibrot(t_mlx *mlx);
-int			render_multijulia(t_mlx *mlx);
-int			render_barnsleyfern(t_mlx *mlx);
+	/* Exit */
+int			clean_exit(t_mlx *mlx, int error);
+
+	/* Init */
+void		default_view(t_mlx *mlx);
+void		init(t_mlx *mlx);
 
 #endif
