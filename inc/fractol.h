@@ -40,7 +40,8 @@
 
 typedef struct s_toggle
 {
-	bool	zoom_optimization;
+	bool	is_zoom_optimization;
+	double	zoom_optimization_factor;
 }	t_toggle;
 
 typedef struct s_complex

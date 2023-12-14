@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:46:50 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 18:56:08 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:56:48 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	render_mandelbrot(t_mlx *mlx)
 {
 	if (mlx->data.redraw_needed)
 	{
-		draw_mandelbrot(&mlx->data, mlx->data.max_iter);
+		draw_mandelbrot(&mlx->data, mlx->data.max_iter * mlx->data.toggle.zoom_optimization_factor);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		if (mlx->data.max_iter != MAX_ITERATIONS)
-			mlx->data.max_iter = MAX_ITERATIONS;
+		if (mlx->data.toggle.zoom_optimization_factor != 1.0)
+			mlx->data.toggle.zoom_optimization_factor = 1.0;
 		else
 			mlx->data.redraw_needed = false;
 	}
@@ -30,10 +30,10 @@ int	render_julia(t_mlx *mlx)
 {
 	if (mlx->data.redraw_needed)
 	{
-		draw_julia(&mlx->data, mlx->data.max_iter, 2.0);
+		draw_julia(&mlx->data, mlx->data.max_iter * mlx->data.toggle.zoom_optimization_factor, 4.0);
 		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
-		if (mlx->data.max_iter != MAX_ITERATIONS)
-			mlx->data.max_iter = MAX_ITERATIONS;
+		if (mlx->data.toggle.zoom_optimization_factor != 1.0)
+			mlx->data.toggle.zoom_optimization_factor = 1.0;
 		else
 			mlx->data.redraw_needed = false;
 	}

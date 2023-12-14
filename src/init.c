@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 11:59:52 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 18:59:56 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:45:20 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	init(t_mlx *mlx)
 		clean_exit(mlx, MLX_ERROR);
 	mlx->data.addr = mlx_get_data_addr(mlx->img, &mlx->data.bits_per_pixel,
 			&mlx->data.size_line, &mlx->data.endian);
-	//TODO: For centering Julia I need to adjust still.
 	//TODO: Also check if mine is reversed...
 	default_view(mlx);
 	mlx->data.redraw_needed = true;
-	mlx->data.toggle.zoom_optimization = true;
+	mlx->data.toggle.is_zoom_optimization = ZOOM_OPTIMIZATION_ON_OFF_DEFAULT;
+	mlx->data.toggle.zoom_optimization_factor = 1.0;
 }
 
 void	default_view(t_mlx *mlx)
