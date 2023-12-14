@@ -6,7 +6,7 @@
 #    By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 13:33:38 by ldulling          #+#    #+#              #
-#    Updated: 2023/12/02 14:14:08 by ldulling         ###   ########.fr        #
+#    Updated: 2023/12/14 12:39:42 by ldulling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ TMP		+=	$(addprefix $(DIR)$(SUBDIR), \
 			fractol.c \
 			init.c \
 			parsing.c \
+			parsing_utils.c \
 			rendering.c \
 )
 

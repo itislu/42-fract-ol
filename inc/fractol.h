@@ -36,6 +36,8 @@
 
 # define MANDELBROT	1
 # define JULIA		2
+# define MULTIBROT	3
+# define MULTIJULIA	4
 # define ARG_ERROR	1
 # define MLX_ERROR	2
 
@@ -87,7 +89,9 @@ typedef struct s_coord
 /* Calculate */
 t_complex	calculate_next_iteration(t_complex z, t_complex c);
 void		draw_julia(t_data *data, int max_iter, double esc_radius);
+void		draw_multijulia(t_data *data, int max_iter, double esc_radius);
 void		draw_mandelbrot(t_data *data, int max_iter);
+void		draw_multibrot(t_data *data, int max_iter);
 void		map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord);
 
 /* Color */
@@ -107,13 +111,21 @@ void		default_view(t_mlx *mlx);
 void		init(t_mlx *mlx);
 
 /* Parsing */
-int			parse_arguments(int argc, char *argv[], t_data *data);
-int			parse_julia_values(int argc, char *argv[], t_complex *c_default);
-int			valid_float_arg(char *arg);
+bool		parse_arguments(int argc, char *argv[], t_data *data);
+bool		setup_mandelbrot(int argc, char *argv[], t_data *data);
+bool		setup_julia(int argc, char *argv[], t_data *data);
+bool		setup_multibrot(int argc, char *argv[], t_data *data);
+bool		setup_multijulia(int argc, char *argv[], t_data *data);
+
+/* Parsing uils */
+bool		parse_julia_values(int argc, char *argv[], t_complex *c_default);
+bool		valid_float_arg(char *arg);
 
 /* Rendering */
 void		img_pixel_put(t_data *data, int x, int y, int color);
 int			render_mandelbrot(t_mlx *mlx);
 int			render_julia(t_mlx *mlx);
+int			render_multibrot(t_mlx *mlx);
+int			render_multijulia(t_mlx *mlx);
 
 #endif

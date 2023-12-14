@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:42:58 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 12:42:59 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:01:53 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ int main(int argc, char *argv[])
 		mlx_loop_hook(mlx.xvar, render_mandelbrot, &mlx);
 	else if (mlx.data.set == JULIA)
 		mlx_loop_hook(mlx.xvar, render_julia, &mlx);
+	else if (mlx.data.set == MULTIBROT)
+		mlx_loop_hook(mlx.xvar, render_multibrot, &mlx);
+	else if (mlx.data.set == MULTIJULIA)
+		mlx_loop_hook(mlx.xvar, render_multijulia, &mlx);
 	mlx_loop(mlx.xvar);
 
 	return 0;

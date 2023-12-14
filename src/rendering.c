@@ -40,6 +40,34 @@ int	render_julia(t_mlx *mlx)
 	return (0);
 }
 
+int	render_multibrot(t_mlx *mlx)
+{
+	if (mlx->data.redraw_needed)
+	{
+		draw_multibrot(&mlx->data, mlx->data.max_iter * mlx->data.toggle.zoom_optimization_factor);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		if (mlx->data.toggle.zoom_optimization_factor != 1.0)
+			mlx->data.toggle.zoom_optimization_factor = 1.0;
+		else
+			mlx->data.redraw_needed = false;
+	}
+	return (0);
+}
+
+int	render_multijulia(t_mlx *mlx)
+{
+	if (mlx->data.redraw_needed)
+	{
+		draw_multijulia(&mlx->data, mlx->data.max_iter * mlx->data.toggle.zoom_optimization_factor, 4.0);
+		mlx_put_image_to_window(mlx->xvar, mlx->win, mlx->img, 0, 0);
+		if (mlx->data.toggle.zoom_optimization_factor != 1.0)
+			mlx->data.toggle.zoom_optimization_factor = 1.0;
+		else
+			mlx->data.redraw_needed = false;
+	}
+	return (0);
+}
+
 void	img_pixel_put(t_data *data, int x, int y, int color)
 {
 	int		bytes_per_pixel;

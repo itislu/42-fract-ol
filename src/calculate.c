@@ -39,6 +39,38 @@ void	draw_mandelbrot(t_data *data, int max_iter)
 	}
 }
 
+void draw_multibrot(t_data *data, int max_iter)
+{
+	static double n = 1.0;
+
+	int			iter;
+	t_coord		coord;
+	t_complex	c;
+	t_complex	z;
+
+	coord.y = 0;
+	while (coord.y < WIN_HEIGHT)
+	{
+		coord.x = 0;
+		while (coord.x < WIN_WIDTH)
+		{
+			map_cmplxplane_to_win(&c, data, coord);
+			z = c;
+			iter = -1;
+			while (z.real * z.real + z.imag * z.imag <= 4 && ++iter < max_iter)
+			{
+				double xtmp = pow(z.real * z.real + z.imag * z.imag, n / 2) * cos(n * atan2(z.imag, z.real)) + c.real;
+				z.imag = pow(z.real * z.real + z.imag * z.imag, n / 2) * sin(n * atan2(z.imag, z.real)) + c.imag;
+				z.real = xtmp;
+			}
+			img_pixel_put(data, coord.x, coord.y, color(iter, max_iter, z));
+			coord.x++;
+		}
+		coord.y++;
+	}
+	n += 0.10;
+}
+
 void	draw_julia(t_data *data, int max_iter, double esc_radius)
 {
 	int			iter;
@@ -61,6 +93,38 @@ void	draw_julia(t_data *data, int max_iter, double esc_radius)
 		}
 		coord.y++;
 	}
+}
+
+void draw_multijulia(t_data *data, int max_iter, double esc_radius)
+{
+	//! Is splitting a little bit in the middle
+
+	static double n = 1.0;
+
+	int			iter;
+	t_coord		coord;
+	t_complex	z;
+
+	coord.y = 0;
+	while (coord.y < WIN_HEIGHT)
+	{
+		coord.x = 0;
+		while (coord.x < WIN_WIDTH)
+		{
+			map_cmplxplane_to_win(&z, data, coord);
+			iter = -1;
+			while (z.real * z.real + z.imag * z.imag <= esc_radius && ++iter < max_iter)
+			{
+				double xtmp = pow(z.real * z.real + z.imag * z.imag, n / 2) * cos(n * atan2(z.imag, z.real)) + data->c_default.real;
+				z.imag = pow(z.real * z.real + z.imag * z.imag, n / 2) * sin(n * atan2(z.imag, z.real)) + data->c_default.imag;
+				z.real = xtmp;
+			}
+			img_pixel_put(data, coord.x, coord.y, color(iter, max_iter, z));
+			coord.x++;
+		}
+		coord.y++;
+	}
+	n += 0.10;
 }
 
 void	map_cmplxplane_to_win(t_complex *cmpt, t_data *data, t_coord coord)
