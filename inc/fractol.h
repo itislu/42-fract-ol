@@ -6,7 +6,7 @@
 /*   By: ldulling <ldulling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:50:02 by ldulling          #+#    #+#             */
-/*   Updated: 2023/12/02 18:59:58 by ldulling         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:46:12 by ldulling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,23 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 
-/* Not yet needed */
-#include <math.h>
-
 /* temporary */
 #include <stdio.h>
 #include "ft_printf.h"
+#include <fcntl.h>
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 980
-# define INITIAL_VIEW 1.1
-# define MAX_ITERATIONS 1000
-# define ZOOM_OPTIMIZATION 90
-# define ARG_ERROR 1
-# define MLX_ERROR 2
-# define MANDELBROT 1
-# define JULIA 2
+/* Customization */
+# define WIN_WIDTH							1920
+# define WIN_HEIGHT							980
+# define INITIAL_VIEW						1.2
+# define MAX_ITERATIONS						100
+# define ZOOM_OPTIMIZATION_ON_OFF_DEFAULT	false
+# define ZOOM_OPTIMIZATION					90
+
+# define MANDELBROT	1
+# define JULIA		2
+# define ARG_ERROR	1
+# define MLX_ERROR	2
 
 typedef struct s_toggle
 {
@@ -96,6 +97,7 @@ int			save_rgb_in_int(double smooth_color);
 /* Events */
 int			key_handling(int keysymbol, t_mlx *mlx);
 int			zoom(int button, int x, int y, t_data *data);
+void		optimization_configs(int keysymbol, t_mlx *mlx);
 
 /* Exit */
 int			clean_exit(t_mlx *mlx, int error);
