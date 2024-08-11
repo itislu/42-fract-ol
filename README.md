@@ -1,5 +1,10 @@
 <div align="center">
 
+# Table of Contents
+| &nbsp; [Julia](#julia) &nbsp; | &nbsp; [Mandelbrot](#mandelbrot) &nbsp; | &nbsp; [Barnsley Fern](#barnsley-fern) &nbsp; | &nbsp; [Multibrot](#multibrot) &nbsp; | &nbsp; [Multijulia](#multijulia) &nbsp; | &nbsp; [Manual](#manual) &nbsp; |
+
+---
+
 # Julia
 ![julia1](https://github.com/user-attachments/assets/19eaa849-f8cd-4dec-8e36-1dd119f1b218)
 ![julia2](https://github.com/user-attachments/assets/55a4b1f4-0637-4402-9d74-304a882c1408)
