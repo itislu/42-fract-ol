@@ -30,7 +30,10 @@ bool	parse_arguments(int argc, char *argv[], t_data *data)
 	else if (ft_strmatches_any(argv[1], 2, "-b", "--barnsley"))
 		success = setup_fixed(argc, data, BARNSLEYFERN);
 	else if (ft_strmatches_any(argv[1], 2, "-h", "--help"))
+	{
 		print_manual();
+		exit(0);
+	}
 	return (success);
 }
 
